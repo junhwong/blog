@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        02.Rust 语言基础《以用促学之rust语言实践》｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/20170304/rust/002-primer/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>02.Rust 语言基础《以用促学之rust语言实践》</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-03-04
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#primer"
+                           title="primer">primer</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            02.Rust 语言基础《以用促学之rust语言实践》
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>在<a href="#">上篇</a>我们安装好了开发环境，也推荐了以下几种文档用于学习：</p>
+<ul>
+<li><a href="https://www.rust-lang.org/" target="_blank" rel="external">官网</a></li>
+<li><a href="http://rustbook.cn/" target="_blank" rel="external">Rust 程序设计语言 中文版</a></li>
+<li><a href="https://rustcc.gitbooks.io/rustprimer/content/" target="_blank" rel="external">RustPrimer</a></li>
+</ul>
+<p>它们都是入门最好的教程了，这篇文章的目的是总结在学习过程中疑难问题，将会随着我们项目的推进不断总结并更新。</p>
+<h3 id="1-系统编程"><a href="#1-系统编程" class="headerlink" title="1. 系统编程"></a>1. 系统编程</h3><p>Rust 的口号就是说它是一门系统编程语言：</p>
+<blockquote>
+<p>Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety. </p>
+</blockquote>
+<p>那么什么是系统语言呢？这在使用了如 Java/C# 这类语言的同学而言不是太了解也没有多大必要，因为平时用的很少。我们把编程语言分下类就清楚了：</p>
+<ul>
+<li><p><strong>系统编程</strong>： 无运行时和GC（这不是必要的）和容易和汇编代码对应起来，编写更接近硬件或直接操作硬件的编程，如：驱动，操作系统。C/C++/汇编等都属于这类语言。</p>
+</li>
+<li><p><strong>应用编程</strong>：针对具体应用场景，工作在较高抽象层次(通常在系统编程之上)的编程，如：web 服务。这也是发展的主流，毕竟计算机是为人服务的。Java/C#/Python等都属于这类语言。</p>
+</li>
+</ul>
+<p>这两个方向没有谁比谁更高大上，它们只是在为各自的领域服务而以，任何一个方向都是对应着数个学科和哲学问题。作为程序员本身而言也不要有瞧不起对方的想法应该互相学习和促进。</p>
+<p>既然 Rust 是系统编程编程语言，而我们又是学习它那么我们应该“入乡随俗” 对它们的习性要多做了解，如：内存管理，指针，生命周期等。</p>
+<p>原来是应用编程方向的同学学习起来较为困难（比如我），但我觉得还好这几天下来感觉也不那么的困难。记住我们的口号：<strong>以用促学</strong> 不要在那里看死书，写”hello world” 要以实际需求(项目)来学习，只有用到了你才会彻底明白那到底是干什么的。这样你才能进步的快。当然，如果你是学生有很多的时间那么请你在实践的基础上尽力去学习它的理论知识，这对你和行业的进步是有帮助的。这里，六月感谢那系为计算机领域服务的研究者和学者。</p>
+<h3 id="2-OOP-面向对象编程"><a href="#2-OOP-面向对象编程" class="headerlink" title="2. OOP 面向对象编程"></a>2. OOP 面向对象编程</h3><p>在 Rust 里边实行 OOP 编程是困难的也不现实(语言层面的原因)，六月在实现AST(抽象语法树)的结构时，遇到了很大的困难，如：</p>
+<p>例子：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 抽象的，类似java的接口</span></div><div class="line"><span class="class"><span class="keyword">trait</span> <span class="title">Node</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">Kind</span></span>() -&gt; NodeType</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DomNode</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">impl</span> Node <span class="keyword">for</span> DomNode&#123;</div><div class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">Kind</span></span>() -&gt; NodeType &#123;</div><div class="line">        NodeType::Dom</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//...</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> node:Node = DomNode</div><div class="line"></div><div class="line"><span class="comment">//以某种方式处理，转换为 DomNode，这在 java 里时可以的</span></div><div class="line"><span class="comment">//但rust里明面上是不支持的，只能通过“特殊”的方式来处理，当然代价很大！</span></div><div class="line"><span class="keyword">let</span> dom:DomNode = <span class="comment">//...</span></div></pre></td></tr></table></figure>
+<p>最后，我请教了一些人，也参考了其它项目，采用了这种很rust风格的方式实现(但我很不爽，觉得它像坨翔….)<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">DomNode</span></span> &#123;</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">enum</span> <span class="title">Node</span></span>&lt;<span class="symbol">'a</span>&gt; &#123;</div><div class="line">    <span class="literal">None</span>,</div><div class="line">    DomNode (DomNode&lt;<span class="symbol">'a</span>&gt;),</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//...</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> node = &amp;<span class="comment">//DomNode 的实例引用(也就是借用) </span></div><div class="line"><span class="keyword">match</span> node &#123;</div><div class="line">    &amp;Node::DomNode(<span class="keyword">ref</span> inner) =&gt; <span class="keyword">self</span>.visit_dom_node(inner), <span class="comment">//记住，这里的 inner 不可写，也就是不能 ref mut </span></div><div class="line">    _ =&gt; <span class="keyword">self</span>.visit_undefined(node)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>大家引以为戒！当然，如果我实现有问题请一定，一定，一定告诉我谢谢！</p>
+<p>这里我想问为什么不可以转换？trait object 指向的地址不是(实例地址和方法虚表地址)吗？它也不违反所有权系统啊？</p>
+<p>trait的限制：</p>
+<ol>
+<li>不能有泛型方法，否则，不能做参数传递。</li>
+<li>不能有返回 Self 的方法，否则，不能做参数传递。</li>
+<li>其它，想起来再加上…</li>
+</ol>
+<h3 id="3-生命周期"><a href="#3-生命周期" class="headerlink" title="3. 生命周期"></a>3. 生命周期</h3><p>再rust里，由于是编译时检查没有GC，所以对待生命周期很是严格，包括所有权系统在内的很多概念都是为其服务的。而我们要做的就是尽量遵循其规则来实现我们的需求。</p>
+<p>所有权的概念相信大家看了上面的文档都可以很轻松的了解，只有生命周期，也就是<strong>‘a</strong> 这样的语法的地方会混淆，那么什么时候写呢？</p>
+<ol>
+<li>含有不固定长度的类型的结构体(struct, enum)， 成员的需要手动写，如：&amp;str，这类的就需要。</li>
+<li>对不固定长的的类型引用(struct, enum),需要加 Box&lt;&gt; 引用。</li>
+<li>其它，想起来再加上…</li>
+</ol>
+<h3 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h3>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/20170304/rust/003-getstarted/" data-toggle="tooltip" data-placement="top"
+                           title="03.项目结构及基础代码《以用促学之rust语言实践》">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/20170303/rust/001-ide/" data-toggle="tooltip" data-placement="top"
+                           title="01. 开发环境的搭建《以用促学之rust语言实践》">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                         data-thread-key="20170304/rust/002-primer/"
+                         data-title="02.Rust 语言基础《以用促学之rust语言实践》"
+                         data-url="https://jun.alu.red/20170304/rust/002-primer/">
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-系统编程"><span class="toc-text">1. 系统编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-OOP-面向对象编程"><span class="toc-text">2. OOP 面向对象编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-生命周期"><span class="toc-text">3. 生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#未完待续"><span class="toc-text">未完待续</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#primer"
+                           title="primer">primer</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'junhwong';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = 'acbea2bd89f2d78a0bdb6a117c0fb477';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>

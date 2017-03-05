@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        01. 开发环境的搭建《以用促学之rust语言实践》｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/20170303/rust/001-ide/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>01. 开发环境的搭建《以用促学之rust语言实践》</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-03-03
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#idea"
+                           title="idea">idea</a>
+                        
+                        <a class="tag" href="/tags/#开发环境"
+                           title="开发环境">开发环境</a>
+                        
+                        <a class="tag" href="/tags/#IDE"
+                           title="IDE">IDE</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            01. 开发环境的搭建《以用促学之rust语言实践》
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>这篇文章是我们学习 Rust 的开始， XView 模板引擎开发的准备篇，非常简单，一看就会。看的同时看看这个录制的<a href="http://v.youku.com/v_show/id_XMjU4MjEyNjI2MA==" target="_blank" rel="external">视频</a>，你会更加的直观。</p>
+<h3 id="1-下载安装包"><a href="#1-下载安装包" class="headerlink" title="1. 下载安装包"></a>1. 下载安装包</h3><p>我们打开 <a href="https://www.rust-lang.org/zh-CN/" target="_blank" rel="external">Rust 官网</a><br><img src="/images/20170303-01/m1.png" alt=""></p>
+<p>下载对应的包，你可以采用跟我一样的在线安装（这样比较慢）：<br><img src="/images/20170303-01/m2.png" alt=""><br>也可以采用离线安装或其它安装方式<br><img src="/images/20170303-01/m3.png" alt=""></p>
+<p>下载 <a href="http://landinghub.visualstudio.com/visual-cpp-build-tools" target="_blank" rel="external">Visual C++ 2015 Build Tools</a><br><img src="/images/20170303-01/m4.png" alt=""></p>
+<p>下载 <a href="https://www.jetbrains.com/idea/download/#section=windows" target="_blank" rel="external">IntelliJ IDEA</a>, 下载这个是因为我推荐使用这个来编辑 Rust 代码，因为它比较简单。<br><img src="/images/20170303-01/m5.png" alt=""></p>
+<h3 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h3><p>首先我们安装 Visual C++ 2015 Build Tools 这个，因为 Rustc 编译器需要它：<br><img src="/images/20170303-01/m6.png" alt=""></p>
+<p><strong>注意</strong> 把win8/10 的SDK 同时安装上，因为后面的 node-gyp 需要用到。</p>
+<p>安装 rust :<br><img src="/images/20170303-01/m7.png" alt=""></p>
+<p>配置环境变量：<br><img src="/images/20170303-01/m8.png" alt=""><br>win10: win 10: 【此电脑】- 【属性】- 【更改设置】- 【高级】- 【环境变量】</p>
+<p>检验是否安装成功：<br><img src="/images/20170303-01/m9.png" alt=""></p>
+<p>安装 IDEA :<br><img src="/images/20170303-01/m10.png" alt=""></p>
+<p>安装完成后启动IDEA并安装 Rust 插件：<br><img src="/images/20170303-01/m11.png" alt=""><br><img src="/images/20170303-01/m12.png" alt=""></p>
+<p>使用 rustup 安装 Rust 源码：</p>
+<p><img src="/images/20170303-01/m13.png" alt=""></p>
+<p>命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rustap component add rust-src</div></pre></td></tr></table></figure></p>
+<h3 id="3-测试"><a href="#3-测试" class="headerlink" title="3. 测试"></a>3. 测试</h3><p>使用 cargo new 创建项目：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cargo new hello_world</div></pre></td></tr></table></figure></p>
+<p>使用 IDEA 打开这个项目：<br><img src="/images/20170303-01/m14.png" alt=""></p>
+<p>使用 cargo run 运行项目：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cargo run</div></pre></td></tr></table></figure></p>
+<p><img src="/images/20170303-01/m15.png" alt=""></p>
+<p>到这里整个开发环境就搭建好了。</p>
+<h3 id="4-Rust-语言学习"><a href="#4-Rust-语言学习" class="headerlink" title="4. Rust 语言学习"></a>4. Rust 语言学习</h3><p>六月推荐大家多是官网去阅读文档，这对学习进度非常有好处。这里给几个链接：</p>
+<ul>
+<li><a href="https://www.rust-lang.org/" target="_blank" rel="external">官网</a></li>
+<li><a href="http://rustbook.cn/" target="_blank" rel="external">Rust 程序设计语言 中文版</a></li>
+<li><a href="https://rustcc.gitbooks.io/rustprimer/content/" target="_blank" rel="external">RustPrimer</a></li>
+</ul>
+<p>但不管怎么样六月希望你可以跟随我的流程一步一步实践一起学习(六月也是 Rust 新坑， 甚至 C/C++ 都不太会，以前学习的都还给老师了，只是他没还我学费， 哈哈！)，都会进步很快。</p>
+<p>好了，就到这里。祝大家工作学习愉快！</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/20170304/rust/002-primer/" data-toggle="tooltip" data-placement="top"
+                           title="02.Rust 语言基础《以用促学之rust语言实践》">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/20170302/xview/template/" data-toggle="tooltip" data-placement="top"
+                           title="新的模板引擎，躁起来吧！">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                         data-thread-key="20170303/rust/001-ide/"
+                         data-title="01. 开发环境的搭建《以用促学之rust语言实践》"
+                         data-url="https://jun.alu.red/20170303/rust/001-ide/">
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-下载安装包"><span class="toc-text">1. 下载安装包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-安装"><span class="toc-text">2. 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-测试"><span class="toc-text">3. 测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Rust-语言学习"><span class="toc-text">4. Rust 语言学习</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#idea"
+                           title="idea">idea</a>
+                        
+                        <a class="tag" href="/tags/#开发环境"
+                           title="开发环境">开发环境</a>
+                        
+                        <a class="tag" href="/tags/#IDE"
+                           title="IDE">IDE</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'junhwong';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = 'acbea2bd89f2d78a0bdb6a117c0fb477';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>

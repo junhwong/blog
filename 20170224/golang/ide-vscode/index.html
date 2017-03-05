@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        基于Visual Studio Code的 Go 语言开发环境搭建｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/20170224/golang/ide-vscode/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>基于Visual Studio Code的 Go 语言开发环境搭建</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-02-24
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#go"
+                           title="go">go</a>
+                        
+                        <a class="tag" href="/tags/#golang"
+                           title="golang">golang</a>
+                        
+                        <a class="tag" href="/tags/#vscode"
+                           title="vscode">vscode</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            基于Visual Studio Code的 Go 语言开发环境搭建
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>作为【成为Web全栈工程师实战】系列基础篇的扩展，我们来搭建一个基于Visual Studio Code的 Go语言开发环境，具体可观看：<a href="http://v.youku.com/v_show/id_XMjUyODU0NTY2NA==.html" target="_blank" rel="external">视频地址</a></p>
+<h2 id="1-通过-VS-Code-官网-下载并安装-vscode"><a href="#1-通过-VS-Code-官网-下载并安装-vscode" class="headerlink" title="1. 通过 VS Code 官网 下载并安装 vscode"></a>1. 通过 <a href="http://code.visualstudio.com/" target="_blank" rel="external">VS Code 官网</a> 下载并安装 vscode</h2><p><img src="/images/20170224-01/m2.png" alt=""><br><img src="/images/20170224-01/m3.png" alt=""></p>
+<p>注意：在安装的时候将vscode 加入到右键菜单上。</p>
+<h2 id="2-安装-goang-1-8-在-Go-官网-下载安装包并安装。或在这里下载"><a href="#2-安装-goang-1-8-在-Go-官网-下载安装包并安装。或在这里下载" class="headerlink" title="2. 安装 goang 1.8, 在 Go 官网 下载安装包并安装。或在这里下载"></a>2. 安装 goang 1.8, 在 Go 官网 下载安装包并安装。或在这里<a href="http://pan.baidu.com/s/1c1VuVAg" target="_blank" rel="external">下载</a></h2><h2 id="3-配置-GOPATH-环境变量"><a href="#3-配置-GOPATH-环境变量" class="headerlink" title="3. 配置 GOPATH 环境变量"></a>3. 配置 GOPATH 环境变量</h2><p>win 10: 【此电脑】- 【属性】- 【更改设置】- 【高级】- 【环境变量】<br><img src="/images/20170224-01/m6.png" alt=""></p>
+<h2 id="4-安装-vscode-Go-扩展"><a href="#4-安装-vscode-Go-扩展" class="headerlink" title="4. 安装 vscode Go 扩展"></a>4. 安装 vscode Go 扩展</h2><p><img src="/images/20170224-01/m4.png" alt=""></p>
+<h2 id="5-安装-Go扩展插件"><a href="#5-安装-Go扩展插件" class="headerlink" title="5. 安装 Go扩展插件"></a>5. 安装 Go扩展插件</h2><p><img src="/images/20170224-01/m5.png" alt=""><br>插件列表以官网为主，下面贴的是我安装时的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">go get -u -v github.com/nsf/gocode</div><div class="line">go get -u -v github.com/rogpeppe/godef</div><div class="line">go get -u -v github.com/zmb3/gogetdoc</div><div class="line">go get -u -v github.com/golang/lint/golint</div><div class="line">go get -u -v github.com/lukehoban/go-outline</div><div class="line">go get -u -v sourcegraph.com/sqs/goreturns</div><div class="line">go get -u -v golang.org/x/tools/cmd/gorename</div><div class="line">go get -u -v github.com/tpng/gopkgs</div><div class="line">go get -u -v github.com/newhook/go-symbols</div><div class="line">go get -u -v golang.org/x/tools/cmd/guru</div><div class="line">go get -u -v github.com/cweill/gotests/...</div></pre></td></tr></table></figure>
+<p>如果插件安装不了(被墙的原因) 可以从这里 <a href="http://pan.baidu.com/s/1c1VuVAg" target="_blank" rel="external">下载</a> 里边的 Go1.8 for Visual Studio Code.zip 解压到 你的 GOPATH 中就好了。</p>
+<h2 id="6-测试并调试"><a href="#6-测试并调试" class="headerlink" title="6. 测试并调试"></a>6. 测试并调试</h2><p>创建 test.go<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	fmt.Print(<span class="string">"Hello GO!"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>使用： go run ./test.go 测试代码</p>
+<h2 id="7-配置-debug"><a href="#7-配置-debug" class="headerlink" title="7. 配置 debug"></a>7. 配置 debug</h2><p><img src="/images/20170224-01/m8.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    // Use IntelliSense to learn about possible Node.js debug attributes.</div><div class="line">    // Hover to view descriptions of existing attributes.</div><div class="line">    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</div><div class="line">    &quot;version&quot;: &quot;0.2.0&quot;,</div><div class="line">    &quot;configurations&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;type&quot;: &quot;go&quot;,</div><div class="line">            &quot;request&quot;: &quot;launch&quot;,</div><div class="line">            &quot;name&quot;: &quot;GO Launch&quot;,</div><div class="line">            &quot;mode&quot;: &quot;debug&quot;,</div><div class="line">            &quot;program&quot;: &quot;$&#123;workspaceRoot&#125;&quot;,</div><div class="line">            &quot;env&quot;: &#123;&#125;,</div><div class="line">            &quot;args&quot;: [],</div><div class="line">            &quot;showLog&quot;: true</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            &quot;type&quot;: &quot;node&quot;,</div><div class="line">            &quot;request&quot;: &quot;launch&quot;,</div><div class="line">            &quot;name&quot;: &quot;Node Launch&quot;,</div><div class="line">            &quot;program&quot;: &quot;$&#123;workspaceRoot&#125;\\server.js&quot;,</div><div class="line">            &quot;cwd&quot;: &quot;$&#123;workspaceRoot&#125;&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>配置好后，按F5就可以进行调试了。到这里就全部完成了，祝你工作学习愉快！</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/20170302/xview/template/" data-toggle="tooltip" data-placement="top"
+                           title="新的模板引擎，躁起来吧！">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                         data-thread-key="20170224/golang/ide-vscode/"
+                         data-title="基于Visual Studio Code的 Go 语言开发环境搭建"
+                         data-url="https://jun.alu.red/20170224/golang/ide-vscode/">
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-通过-VS-Code-官网-下载并安装-vscode"><span class="toc-text">1. 通过 VS Code 官网 下载并安装 vscode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装-goang-1-8-在-Go-官网-下载安装包并安装。或在这里下载"><span class="toc-text">2. 安装 goang 1.8, 在 Go 官网 下载安装包并安装。或在这里下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-配置-GOPATH-环境变量"><span class="toc-text">3. 配置 GOPATH 环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-安装-vscode-Go-扩展"><span class="toc-text">4. 安装 vscode Go 扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-安装-Go扩展插件"><span class="toc-text">5. 安装 Go扩展插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-测试并调试"><span class="toc-text">6. 测试并调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-配置-debug"><span class="toc-text">7. 配置 debug</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#go"
+                           title="go">go</a>
+                        
+                        <a class="tag" href="/tags/#golang"
+                           title="golang">golang</a>
+                        
+                        <a class="tag" href="/tags/#vscode"
+                           title="vscode">vscode</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'junhwong';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = 'acbea2bd89f2d78a0bdb6a117c0fb477';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>
