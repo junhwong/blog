@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        03.项目结构及基础代码《以用促学之rust语言实践》｜码代码的六月
+        基于Visual Studio Code的 Go 语言开发环境搭建｜码代码的六月
         
     </title>
 
-    <link rel="canonical" href="https://jun.alu.red/20170304/rust/003-getstarted/">
+    <link rel="canonical" href="https://jun.alu.red/golang/ide-vscode/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -145,30 +145,24 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>03.项目结构及基础代码《以用促学之rust语言实践》</h1>
+                    <h1>基于Visual Studio Code的 Go 语言开发环境搭建</h1>
                     
                     <span class="meta">
                          作者 码代码的六月
                         <span>
-                          日期 2017-03-04
+                          日期 2017-02-24
                          </span>
                     </span>
                     <div class="tags text-center">
                         
-                        <a class="tag" href="/tags/#rust"
-                           title="rust">rust</a>
+                        <a class="tag" href="/tags/#go"
+                           title="go">go</a>
                         
-                        <a class="tag" href="/tags/#otpl"
-                           title="otpl">otpl</a>
+                        <a class="tag" href="/tags/#golang"
+                           title="golang">golang</a>
                         
-                        <a class="tag" href="/tags/#libotpl"
-                           title="libotpl">libotpl</a>
-                        
-                        <a class="tag" href="/tags/#node"
-                           title="node">node</a>
-                        
-                        <a class="tag" href="/tags/#前端"
-                           title="前端">前端</a>
+                        <a class="tag" href="/tags/#vscode"
+                           title="vscode">vscode</a>
                         
                     </div>
                 </div>
@@ -177,7 +171,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            03.项目结构及基础代码《以用促学之rust语言实践》
+            基于Visual Studio Code的 Go 语言开发环境搭建
         </span>
     </div>
 </header>
@@ -188,26 +182,19 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>我们从这篇开始来编写实际的项目代码，首先我们创建工程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cargo new libotpl</div></pre></td></tr></table></figure></p>
-<p>这里补充下 cargo 的几个常用命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cargo -v             查看cargo的版本。</div><div class="line">cargo new proj_name  创建一个新的rust项目。</div><div class="line">cargo run            运行 rust 程序，注意必须包含 main 函数。</div><div class="line">cargo test           运行rust测试。</div><div class="line">cargo build          构建rust程序。</div></pre></td></tr></table></figure>
-<p>参数的话就自行查看基础教程了，地址在<a href="/20170303/rust/001-ide/">上篇</a>博客中有。</p>
-<h3 id="1-项目结构"><a href="#1-项目结构" class="headerlink" title="1. 项目结构"></a>1. 项目结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">│  .gitignore</div><div class="line">│  Cargo.toml</div><div class="line">├─src</div><div class="line">│  │  lib.rs                # 模块定义文件</div><div class="line">│  └─core                   # otpl 库核心模块</div><div class="line">│      │  mod.rs            # 模块定义文件</div><div class="line">│      ├─ast                # 抽象语法树模块</div><div class="line">│      │      mod.rs        # 模块定义文件</div><div class="line">│      ├─opc                # 操作码定义模块</div><div class="line">│      ├─parser             # 语法解析器</div><div class="line">│      ├─scanner            # 词法分析器</div><div class="line">│      └─token              # 词法定义模块</div><div class="line">│</div><div class="line">└─target                    # 编译临时文件</div></pre></td></tr></table></figure>
-<p>编译器的实现呢，我们也将按一般编译器的方式来编写，即：</p>
-<ul>
-<li>通过词法分析器解析词法</li>
-<li>通过语法分析器解析词法分析器解析出来的词法并生成AST（抽象语法树）</li>
-<li>根据目标语言的不同写不同的访问器(Visitor Pattern)，来生成目标文件（如：OTIL）</li>
-</ul>
-<p>然后导出 C 接口（ABI 应用程序二进制接口），供其它语言调用(FFI 外部函数接口)，来实现自己语言平台的模板编译和运行时服务。</p>
-<p>这里特别说明一下，我不推荐使用FFI直接使用otpl库提供的运行时服务，因为在跨越语言边界时存在风险，如：内存泄露。还有就是数据转换时也会有一定的损耗，降低服务的可用性。</p>
-<h3 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2. 代码实现"></a>2. 代码实现</h3><p>这里给出目前实现的功能清单，具体的你可以看<a href="https://github.com/opentpl/libotpl" target="_blank" rel="external">项目</a>源码和<a href="http://v.youku.com/v_show/id_XMjYwMTMwODE5Ng==" target="_blank" rel="external">视频</a>来了解.</p>
-<p>libotpl::core::ast:</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Node</span></span>; <span class="comment">// 持续完善</span></div><div class="line"><span class="class"><span class="keyword">type</span> <span class="title">NodeList</span></span> =  <span class="built_in">Vec</span>&lt;Node&gt;;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DomNode</span></span>;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DomAttr</span></span>;</div><div class="line"><span class="class"><span class="keyword">trait</span> <span class="title">Visitor</span></span>; <span class="comment">// 持续完善</span></div></pre></td></tr></table></figure>
-<h3 id="3-ABI-接口"><a href="#3-ABI-接口" class="headerlink" title="3. ABI 接口"></a>3. ABI 接口</h3><p>目前呢这个接口是属于测试性质的，就给出两个。<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> std::ffi::&#123;CString, CStr&#125;;</div><div class="line"><span class="keyword">use</span> std::os::raw::c_char;</div><div class="line"></div><div class="line"><span class="meta">#[allow(unused_variables)]</span></div><div class="line"><span class="meta">#[no_mangle]</span></div><div class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">"C"</span> <span class="function"><span class="keyword">fn</span> <span class="title">complie</span></span>(src:*<span class="keyword">const</span> c_char, filename:*<span class="keyword">const</span> c_char, mode: <span class="keyword">i32</span>,line: <span class="keyword">i32</span>,column: <span class="keyword">i32</span>) -&gt; *<span class="keyword">const</span> c_char&#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">#[no_mangle]</span></div><div class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">"C"</span> <span class="function"><span class="keyword">fn</span> <span class="title">drop_cstr</span></span>(ptr: *<span class="keyword">mut</span> c_char) &#123;</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>目前主要针对 XView 这个项目，所以导出这块会在 <a href="https://github.com/opentpl/xview-rs" target="_blank" rel="external">xview-rs</a> 这个项目中的。</p>
-<h3 id="4-补充"><a href="#4-补充" class="headerlink" title="4. 补充"></a>4. 补充</h3><p>到目前为主所有的文章都写的很简单，你只看博客的话肯定不明白。所以你一定要<strong>「以学促用」</strong> 跟随项目本身阅读源码和文档(动手实际编写代码)并结合与之配套的视频才能参与其中，体会这个系列的精髓。当然了，如果你有问题，欢迎提问。</p>
-<p>另外，项目本身是开源的欢迎所有同学 <a href="https://www.zhihu.com/question/21682976" target="_blank" rel="external">PR</a> 和 issue (报告bug，提问和建议)。</p>
+                <p>作为【成为Web全栈工程师实战】系列基础篇的扩展，我们来搭建一个基于Visual Studio Code的 Go语言开发环境，具体可观看：<a href="http://v.youku.com/v_show/id_XMjUyODU0NTY2NA==.html" target="_blank" rel="external">视频地址</a></p>
+<h2 id="1-通过-VS-Code-官网-下载并安装-vscode"><a href="#1-通过-VS-Code-官网-下载并安装-vscode" class="headerlink" title="1. 通过 VS Code 官网 下载并安装 vscode"></a>1. 通过 <a href="http://code.visualstudio.com/" target="_blank" rel="external">VS Code 官网</a> 下载并安装 vscode</h2><p><img src="/images/20170224-01/m2.png" alt=""><br><img src="/images/20170224-01/m3.png" alt=""></p>
+<p>注意：在安装的时候将vscode 加入到右键菜单上。</p>
+<h2 id="2-安装-goang-1-8-在-Go-官网-下载安装包并安装。或在这里下载"><a href="#2-安装-goang-1-8-在-Go-官网-下载安装包并安装。或在这里下载" class="headerlink" title="2. 安装 goang 1.8, 在 Go 官网 下载安装包并安装。或在这里下载"></a>2. 安装 goang 1.8, 在 Go 官网 下载安装包并安装。或在这里<a href="http://pan.baidu.com/s/1c1VuVAg" target="_blank" rel="external">下载</a></h2><h2 id="3-配置-GOPATH-环境变量"><a href="#3-配置-GOPATH-环境变量" class="headerlink" title="3. 配置 GOPATH 环境变量"></a>3. 配置 GOPATH 环境变量</h2><p>win 10: 【此电脑】- 【属性】- 【更改设置】- 【高级】- 【环境变量】<br><img src="/images/20170224-01/m6.png" alt=""></p>
+<h2 id="4-安装-vscode-Go-扩展"><a href="#4-安装-vscode-Go-扩展" class="headerlink" title="4. 安装 vscode Go 扩展"></a>4. 安装 vscode Go 扩展</h2><p><img src="/images/20170224-01/m4.png" alt=""></p>
+<h2 id="5-安装-Go扩展插件"><a href="#5-安装-Go扩展插件" class="headerlink" title="5. 安装 Go扩展插件"></a>5. 安装 Go扩展插件</h2><p><img src="/images/20170224-01/m5.png" alt=""><br>插件列表以官网为主，下面贴的是我安装时的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">go get -u -v github.com/nsf/gocode</div><div class="line">go get -u -v github.com/rogpeppe/godef</div><div class="line">go get -u -v github.com/zmb3/gogetdoc</div><div class="line">go get -u -v github.com/golang/lint/golint</div><div class="line">go get -u -v github.com/lukehoban/go-outline</div><div class="line">go get -u -v sourcegraph.com/sqs/goreturns</div><div class="line">go get -u -v golang.org/x/tools/cmd/gorename</div><div class="line">go get -u -v github.com/tpng/gopkgs</div><div class="line">go get -u -v github.com/newhook/go-symbols</div><div class="line">go get -u -v golang.org/x/tools/cmd/guru</div><div class="line">go get -u -v github.com/cweill/gotests/...</div></pre></td></tr></table></figure>
+<p>如果插件安装不了(被墙的原因) 可以从这里 <a href="http://pan.baidu.com/s/1c1VuVAg" target="_blank" rel="external">下载</a> 里边的 Go1.8 for Visual Studio Code.zip 解压到 你的 GOPATH 中就好了。</p>
+<h2 id="6-测试并调试"><a href="#6-测试并调试" class="headerlink" title="6. 测试并调试"></a>6. 测试并调试</h2><p>创建 test.go<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	fmt.Print(<span class="string">"Hello GO!"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>使用： go run ./test.go 测试代码</p>
+<h2 id="7-配置-debug"><a href="#7-配置-debug" class="headerlink" title="7. 配置 debug"></a>7. 配置 debug</h2><p><img src="/images/20170224-01/m8.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    // Use IntelliSense to learn about possible Node.js debug attributes.</div><div class="line">    // Hover to view descriptions of existing attributes.</div><div class="line">    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</div><div class="line">    &quot;version&quot;: &quot;0.2.0&quot;,</div><div class="line">    &quot;configurations&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;type&quot;: &quot;go&quot;,</div><div class="line">            &quot;request&quot;: &quot;launch&quot;,</div><div class="line">            &quot;name&quot;: &quot;GO Launch&quot;,</div><div class="line">            &quot;mode&quot;: &quot;debug&quot;,</div><div class="line">            &quot;program&quot;: &quot;$&#123;workspaceRoot&#125;&quot;,</div><div class="line">            &quot;env&quot;: &#123;&#125;,</div><div class="line">            &quot;args&quot;: [],</div><div class="line">            &quot;showLog&quot;: true</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            &quot;type&quot;: &quot;node&quot;,</div><div class="line">            &quot;request&quot;: &quot;launch&quot;,</div><div class="line">            &quot;name&quot;: &quot;Node Launch&quot;,</div><div class="line">            &quot;program&quot;: &quot;$&#123;workspaceRoot&#125;\\server.js&quot;,</div><div class="line">            &quot;cwd&quot;: &quot;$&#123;workspaceRoot&#125;&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>配置好后，按F5就可以进行调试了。到这里就全部完成了，祝你工作学习愉快！</p>
 
                 <hr>
                 
@@ -215,15 +202,10 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/20170308/rust/004-macros/" data-toggle="tooltip" data-placement="top"
-                           title="04.宏Macro详解《以用促学之rust语言实践》">&larr; Previous Post</a>
+                        <a href="/xview/template/" data-toggle="tooltip" data-placement="top"
+                           title="新的模板引擎，躁起来吧！">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/20170304/rust/002-primer/" data-toggle="tooltip" data-placement="top"
-                           title="02.Rust 语言基础《以用促学之rust语言实践》">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -231,9 +213,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="20170304/rust/003-getstarted/"
-                         data-title="03.项目结构及基础代码《以用促学之rust语言实践》"
-                         data-url="https://jun.alu.red/20170304/rust/003-getstarted/">
+                         data-thread-key="golang/ide-vscode/"
+                         data-title="基于Visual Studio Code的 Go 语言开发环境搭建"
+                         data-url="https://jun.alu.red/golang/ide-vscode/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -245,7 +227,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-项目结构"><span class="toc-text">1. 项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-代码实现"><span class="toc-text">2. 代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ABI-接口"><span class="toc-text">3. ABI 接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-补充"><span class="toc-text">4. 补充</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-通过-VS-Code-官网-下载并安装-vscode"><span class="toc-text">1. 通过 VS Code 官网 下载并安装 vscode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装-goang-1-8-在-Go-官网-下载安装包并安装。或在这里下载"><span class="toc-text">2. 安装 goang 1.8, 在 Go 官网 下载安装包并安装。或在这里下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-配置-GOPATH-环境变量"><span class="toc-text">3. 配置 GOPATH 环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-安装-vscode-Go-扩展"><span class="toc-text">4. 安装 vscode Go 扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-安装-Go扩展插件"><span class="toc-text">5. 安装 Go扩展插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-测试并调试"><span class="toc-text">6. 测试并调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-配置-debug"><span class="toc-text">7. 配置 debug</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -267,20 +249,14 @@
                     </h5>
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#rust"
-                           title="rust">rust</a>
+                        <a class="tag" href="/tags/#go"
+                           title="go">go</a>
                         
-                        <a class="tag" href="/tags/#otpl"
-                           title="otpl">otpl</a>
+                        <a class="tag" href="/tags/#golang"
+                           title="golang">golang</a>
                         
-                        <a class="tag" href="/tags/#libotpl"
-                           title="libotpl">libotpl</a>
-                        
-                        <a class="tag" href="/tags/#node"
-                           title="node">node</a>
-                        
-                        <a class="tag" href="/tags/#前端"
-                           title="前端">前端</a>
+                        <a class="tag" href="/tags/#vscode"
+                           title="vscode">vscode</a>
                         
                     </div>
                 </section>
