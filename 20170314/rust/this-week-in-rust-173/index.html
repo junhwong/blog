@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        本周 Rust 语言动态，第 173 周(2017-12)｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/20170314/rust/this-week-in-rust-173/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>本周 Rust 语言动态，第 173 周(2017-12)</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-03-14
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#This Week in Rust"
+                           title="This Week in Rust">This Week in Rust</a>
+                        
+                        <a class="tag" href="/tags/#编程语言"
+                           title="编程语言">编程语言</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            本周 Rust 语言动态，第 173 周(2017-12)
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>2017年3月15日第12周，译自：<a href="https://this-week-in-rust.org/blog/2017/03/14/this-week-in-rust-173/" target="_blank" rel="external">This Week in Rust 173</a></p>
+<p>你好，欢迎来到新一期的《本周 Rust 语言动态》。<a href="http://rust-lang.org/" target="_blank" rel="external">Rust</a> 是一门在安全、并发和速度上力争上游的系统编程语言。这是对Rust语言的开发进度和社区等相关动态的一周摘要。如想要提名请在Tweet上<a href="https://twitter.com/ThisWeekInRust" target="_blank" rel="external">@ThisWeekInRust</a>或者提<a href="https://github.com/cmr/this-week-in-rust" target="_blank" rel="external">PR</a>。我们热烈欢迎参与和<a href="https://github.com/rust-lang/rust/blob/master/CONTRIBUTING.md" target="_blank" rel="external">贡献</a>(译者：我也欢迎参与翻译和纠错)。</p>
+<p>《本周 Rust 语言动态》是在<a href="https://github.com/cmr/this-week-in-rust" target="_blank" rel="external">GitHub</a>上公开编辑的。如果你在周发布中找到任何错误，请提交 <a href="https://github.com/cmr/this-week-in-rust/pulls" target="_blank" rel="external">PR</a>。</p>
+<p>译者：如果你发现有翻译错误或与原文版本不一致请在<a href="#comment">文章下方</a>留言。</p>
+<h2 id="来自-Rust-社区的更新"><a href="#来自-Rust-社区的更新" class="headerlink" title="来自 Rust 社区的更新"></a>来自 Rust 社区的更新</h2><h3 id="新闻和博客"><a href="#新闻和博客" class="headerlink" title="新闻和博客"></a>新闻和博客</h3><ul>
+<li><p><a href="https://sdleffler.github.io/RustTypeSystemTuringComplete/" target="_blank" rel="external">Rust 的类型系统是图灵完备的：Rust中类型级别编程的探索</a>。回应<a href="https://www.reddit.com/r/rust/comments/5y4x9r/challenge_rusts_type_system_is_not_turing_complete/" target="_blank" rel="external">Rust类型系统不是图灵完备</a>的质询。</p>
+</li>
+<li><p><a href="https://davidmcneil.github.io/the-rusty-web/" target="_blank" rel="external">Rust在web开发的定位</a>。一个演示web应用程序，它在rust中实现CPU绑定部分(编译到wasm/asm.js)，并使用现有的web技术处理面向用户的部分。</p>
+</li>
+<li><p><a href="https://beachape.com/blog/2017/03/12/gentle-intro-to-type-level-recursion-in-Rust-from-zero-to-frunk-hlist-sculpting/" target="_blank" rel="external">Gentle介绍 Rust在类型级别的递归：从零开始实现HList(译：哈希表)的演进</a>。</p>
+</li>
+<li><p><a href="https://ferrisellis.com/posts/rust-implementing-units-for-types/" target="_blank" rel="external">Rust中的数学距离：单位之间安全性和正确性。</a></p>
+</li>
+<li><p><a href="http://alschwalm.com/blog/static/2017/03/07/exploring-dynamic-dispatch-in-rust/" target="_blank" rel="external">探索Rust的动态派发。</a></p>
+</li>
+<li><p><a href="http://www.acrawford.com/2017/03/09/rust-on-the-cortex-m3.html" target="_blank" rel="external">在ARM Cortex M3(译：一种处理器内核)上运行Rust。</a></p>
+</li>
+<li><p><a href="https://blog.guillaume-gomez.fr/articles/2017-03-09+Little+tour+of+multiple+iterators+implementation+in+Rust" target="_blank" rel="external">实现Rust中多迭代器之间的少量循环(译：没具体明白他的意思)</a>。</p>
+</li>
+<li><p><a href="https://mgattozzi.com/hyper-client" target="_blank" rel="external">如何使用Hyper异步HTTP库</a></p>
+</li>
+<li><p><a href="https://kvark.github.io/ecs/rust/2017/03/08/specs.html" target="_blank" rel="external">在Rust中构建并行ECS</a>。纪念发布0.8版本规范的开发故事。</p>
+</li>
+<li><p><a href="https://llogiq.github.io/2017/03/06/lifetime.html" target="_blank" rel="external">生命周期的映射</a>。<code>flat_map</code>与嵌套循环。</p>
+</li>
+<li><p><a href="https://medium.com/@jordan_98525/reference-iterators-in-rust-5603a51b5192" target="_blank" rel="external">Rust中迭代器的引用</a></p>
+</li>
+<li><p><a href="https://github.com/BurntSushi/ripgrep/releases/tag/0.5.0" target="_blank" rel="external">ripgrep发布0.5.0并支持UTF-16编码</a>。ripgrep是一个面向行的搜索工具，它结合了Silver Searcher的可用性和GNU grep的原始速度。</p>
+</li>
+<li><p><a href="https://benchmarksgame.alioth.debian.org/u64q/compare.php?lang=rust&amp;lang2=gpp" target="_blank" rel="external">Rust现在在“计算机基准游戏”许多基准中击败C++，其它方面也是如此。</a></p>
+</li>
+<li><p><a href="https://guillaumegomez.github.io/this-week-in-rust-docs/blog/this-week-in-rust-docs-47" target="_blank" rel="external">《本周 Rust 语言动态》文档 47</a></p>
+</li>
+<li><p><a href="https://pliniker.github.io/eval-rs/" target="_blank" rel="external">“使用Rust写一个解释器”</a>系列：<a href="https://pliniker.github.io/post/eval-rs-04/" target="_blank" rel="external">解析为AST</a>。</p>
+</li>
+</ul>
+<h2 id="本周的-Crate"><a href="#本周的-Crate" class="headerlink" title="本周的 Crate"></a>本周的 Crate</h2><p>本周的Crate是<a href="https://github.com/japaric/utest" target="_blank" rel="external">µtest</a>，它是一个嵌入式的测试框架。<br>感谢<a href="https://users.rust-lang.org/users/nasa42" target="_blank" rel="external">nasa42</a>的推荐。<br><a href="https://users.rust-lang.org/t/crate-of-the-week/2704" target="_blank" rel="external">提交下周你的推荐和参与投票</a></p>
+<h2 id="呼吁参与"><a href="#呼吁参与" class="headerlink" title="呼吁参与"></a>呼吁参与</h2><p>始终想为开源项目贡献，但不知道从哪里开始？ 每周我们强调Rust社区的一些任务，让你选择并开始！</p>
+<p>这些任务中可能会有可能指点你的导师，访问任务页面了解详情。</p>
+<ul>
+<li><a href="https://internals.rust-lang.org/t/crossbeam-request-for-help/4933" target="_blank" rel="external">Crossbeam项目正在寻找到新的维护者。</a></li>
+<li><a href="https://underhanded.rs/blog/2016/12/15/underhanded-rust.en-US.html" target="_blank" rel="external">Underhanded Rust语言竞赛</a></li>
+<li>[中级]<a href="notify-rust: 实现图标和图像" target="_blank" rel="external"></a>。notify-rust 让你可以在Linux和BSD上发送桌面通知。</li>
+<li><a href="https://github.com/rust-lang-nursery/tempdir/issues/15#issuecomment-286513675" target="_blank" rel="external">tempdir: TempDir 受到<code>remove_dir_all</code>在windows上不稳定性的影响</a></li>
+<li>[容易] <a href="https://github.com/servo/servo/issues/15162" target="_blank" rel="external">servo: 寻找些工作</a></li>
+</ul>
+<p>如果你是Rust项目的拥有着并在寻找贡献者，请提交相关任务。</p>
+<h2 id="来自Rust核心的更新"><a href="#来自Rust核心的更新" class="headerlink" title="来自Rust核心的更新"></a>来自Rust核心的更新</h2><p>上周共合并142个<a href="https://github.com/issues?page=6&amp;q=is%3Apr+org%3Arust-lang+is%3Amerged+merged%3A2016-03-06..2016-03-13" target="_blank" rel="external">PR</a>。</p>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/39835" target="_blank" rel="external">1.16发布记录（早期合并）</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40401" target="_blank" rel="external">Beta 版的回滚点</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40311" target="_blank" rel="external"><code>save-analysis</code>过程中处理宏程序</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/39820" target="_blank" rel="external">导出<code>save-analysis</code>里的属性</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40336" target="_blank" rel="external">rustc: 只有在<code>--emit dep-info</code>参数之上的快速退出</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40344" target="_blank" rel="external"><code>save-analysis</code> 现在能在类型错误里存在</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40285" target="_blank" rel="external">修复ICE上的常量枚举</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40287" target="_blank" rel="external">修复不正确的标签格式化</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40272" target="_blank" rel="external">修复宏表达式里的常量</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40254" target="_blank" rel="external">修复编译器内部构建<code>personality_fn</code></a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40220" target="_blank" rel="external">新语法：<code>ItemKind::MacroDef</code>，nix 宏未命名</a>（阻止改变）</li>
+<li><a href="https://github.com/rust-lang/rust/pull/40340" target="_blank" rel="external">更新语法 <code>pub</code>(未开放)</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40369" target="_blank" rel="external">单个路径段的组合</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40404" target="_blank" rel="external">修复由契约关系引起的body类型不匹配</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40372" target="_blank" rel="external"><code>!</code>类型没有跟多的StorageLive</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40239" target="_blank" rel="external">没有更多的MIR插件通过</a>(即便曾经有一个)</li>
+<li><a href="https://github.com/rust-lang/rust/pull/39648" target="_blank" rel="external">MIR内联</a></li>
+<li>为<a href="https://github.com/rust-lang/rust/pull/40390" target="_blank" rel="external">HashMap</a>, <a href="https://github.com/rust-lang/rust/pull/40389" target="_blank" rel="external">VecDeque</a>实现<code>placement-in</code></li>
+<li>缩减 <a href="https://github.com/rust-lang/rust/pull/40237" target="_blank" rel="external"><code>HashMap</code></a> 的大小适配。</li>
+<li><a href="https://github.com/rust-lang/rust/pull/40410" target="_blank" rel="external">OsString::shrink_to_fit</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40419" target="_blank" rel="external">修复rustdoc相关常量的显示</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40265" target="_blank" rel="external">提升rustdoc侧边栏的样式</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/39770" target="_blank" rel="external">用脚本来推动降低陈旧的配置</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40448" target="_blank" rel="external">rustbuild: 修复编译器文档</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/39518" target="_blank" rel="external">rustbuild 现在用复制体会链接</a></li>
+<li><a href="https://github.com/rust-lang/crates.io/pull/609" target="_blank" rel="external">crates.io目前使用Diesel</a></li>
+</ul>
+<h2 id="新贡献者"><a href="#新贡献者" class="headerlink" title="新贡献者"></a>新贡献者</h2><ul>
+<li>CrazyMerlyn</li>
+<li>Fabjan Sukalia</li>
+<li>Gibson Fahnestock</li>
+<li>Joel Gallant</li>
+<li>Jonas Bushart</li>
+<li>Joshua Horwitz</li>
+<li>madseagames</li>
+<li>Paul Daniel Faria</li>
+<li>Petr Hosek</li>
+<li>Tobias Schottdorf</li>
+</ul>
+<h2 id="核准的-RFC"><a href="#核准的-RFC" class="headerlink" title="核准的 RFC"></a>核准的 RFC</h2><p>对Rust的更改需要遵守<a href="https://github.com/rust-lang/rfcs#rust-rfcs" target="_blank" rel="external">RFC(对请求的讨论)的进程</a>。这些是本周经核准实现的RFC：</p>
+<ul>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1845" target="_blank" rel="external">RFC 1845: <code>From&lt;&amp;[T]&gt; for Rc&lt;[T]&gt; + From&lt;&amp;str&gt; for Rc&lt;str&gt;.</code></a></li>
+</ul>
+<h2 id="最终讨论期"><a href="#最终讨论期" class="headerlink" title="最终讨论期"></a>最终讨论期</h2><p>每周<a href="https://www.rust-lang.org/team.html" target="_blank" rel="external">团队</a>都会公布一些RFC和关键PR进入<code>最终讨论期</code>的决定。你可以表达你的意见。本周的这些RFC有：</p>
+<ul>
+<li>[意向: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1884" target="_blank" rel="external">向libcore中添加不稳定的排序。</a></li>
+<li>[意向: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1869" target="_blank" rel="external">使用宏<code>eprint!</code>和<code>eprintln!</code>写入准错误。</a></li>
+<li>[意向: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1860" target="_blank" rel="external">在<code>core::mem</code>中包含ManuallyDrop的包装器。</a></li>
+<li>[意向: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1859" target="_blank" rel="external">扩展<code>?</code>操作操作其它类型。</a></li>
+<li>[意向: 关闭] <a href="https://github.com/rust-lang/rfcs/pull/1808" target="_blank" rel="external">向语言中添加可变长度的数组。</a></li>
+<li>[意向: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1769" target="_blank" rel="external">扩展条目API来处理借用的键。</a></li>
+<li>[意向: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1685" target="_blank" rel="external">弃用匿名参数。</a></li>
+</ul>
+<h2 id="新的RFC"><a href="#新的RFC" class="headerlink" title="新的RFC"></a>新的RFC</h2><ul>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1949" target="_blank" rel="external">允许enum变体在表达式和模式中省略名字(限定符)，当然它必须是能被推导的。</a></li>
+</ul>
+<h2 id="RFC风格"><a href="#RFC风格" class="headerlink" title="RFC风格"></a>RFC风格</h2><p>RFC风格是决定Rust社区风格指南过程的一部分，也是Rustfmt的默认风格。这个过程与RFC一样，只要喜欢RFC进程，欢迎所有用户评论和提交RFC。但是在进展到PR之前我们试图达成一个初步的共识(包括最终讨论期)。如果你先帮助决定Rust代码应该是什么样子，来参与吧！。</p>
+<p>处在最终讨论期的PR:</p>
+<ul>
+<li><a href="https://github.com/rust-lang-nursery/fmt-rfcs/pull/53" target="_blank" rel="external">structs 和 unions</a></li>
+</ul>
+<p>处在最终讨论期的 issue:</p>
+<ul>
+<li><a href="https://github.com/rust-lang-nursery/fmt-rfcs/issues/38" target="_blank" rel="external">where 从句</a></li>
+</ul>
+<p>其它值得关注的 issue：</p>
+<ul>
+<li><a href="https://github.com/rust-lang-nursery/fmt-rfcs/issues/16" target="_blank" rel="external">表达式(跟踪issue)</a></li>
+</ul>
+<h2 id="即将举行的活动"><a href="#即将举行的活动" class="headerlink" title="即将举行的活动"></a>即将举行的活动</h2><ul>
+<li><a href="https://www.meetup.com/Rust-Meetup-Hamburg/events/237858112/" target="_blank" rel="external">3月15日。 Rust Hamburg聚会 - Rust/Ethereum 聚会.</a></li>
+<li><a href="https://www.meetup.com/Rust-Los-Angeles/events/237757181/" target="_blank" rel="external">3月15日。 Rust 洛杉矶 - Rust LA 每月聚会 - 骇客之夜.</a></li>
+<li><a href="https://www.meetup.com/Rust-Dublin/events/237883717/" target="_blank" rel="external">3月15日。 Rust Dublin - Rust Lightning Talks.</a></li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-community" target="_blank" rel="external">3月15日。 Rust社区团队会议#rust-community on irc.mozilla.org.</a></li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-docs" target="_blank" rel="external">3月15日。 Rust文档团队会议#rust-docs on irc.mozilla.org.</a></li>
+<li><a href="https://www.meetup.com/de-DE/Rust-Modern-Systems-Programming-in-Leipzig/events/237780401/" target="_blank" rel="external">3月16日。 Rust Leipzig 现代系统编程.</a></li>
+<li><a href="https://www.eventbrite.ca/e/get-rusty-tickets-31407199780" target="_blank" rel="external">3月16日。 加拿大汤普森河大学， - Get Rusty.</a></li>
+<li><a href="https://www.meetup.com/Rust-Paris/events/238240907/" target="_blank" rel="external">3月21日。 Rust 巴黎聚会.</a></li>
+<li><a href="https://www.meetup.com/opentechschool-berlin/events/238181558/" target="_blank" rel="external">3月21日。 柏林OpenTechSchool - Rust 骇客与学习.</a></li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-community" target="_blank" rel="external">3月22日。 Rust社区团队会议#rust-community on irc.mozilla.org.</a></li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-docs" target="_blank" rel="external">3月22日。 Rust文档团队会议#rust-docs on irc.mozilla.org.</a></li>
+<li><a href="https://internals.rust-lang.org/t/release-cycle-triage-proposal/3544" target="_blank" rel="external">3月23日。 Rust 发布遴选.</a></li>
+<li><a href="https://wiki.gnome.org/Hackfests/Rust2017" target="_blank" rel="external">3月29日。 GNOME+Rust Hackfest 2017, 墨西哥.</a></li>
+<li><a href="https://www.meetup.com/South-Florida-Rust-Meetup/events/238110251/" target="_blank" rel="external">3月29日。 South Florida Rust聚会：介绍所有权与借用的3个部分.</a></li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-community" target="_blank" rel="external">3月29日。 Rust社区团队会议#rust-community on irc.mozilla.org.</a></li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-docs" target="_blank" rel="external">3月19日。 Rust文档团队会议#rust-docs on irc.mozilla.org.</a></li>
+<li><a href="https://underhanded.rs/blog/2016/12/15/underhanded-rust.en-US.html" target="_blank" rel="external">3月31日。 Underhanded Rust比赛提交截止日期.</a></li>
+<li><a href="http://2017.rustfest.eu/" target="_blank" rel="external">4月30日。 RustFest 2017 - Kyiv, 乌克兰.</a></li>
+</ul>
+<p>如果你正举办Rust活动，请添加到<a href="https://www.google.com/calendar/embed?src=apd9vmbc22egenmtu5l6c5jbfc%40group.calendar.google.com" target="_blank" rel="external">日历</a>。邮件给<a href="community-team@rust-lang.org">Rust社区团队</a>访问。</p>
+<h2 id="Rust-工作"><a href="#Rust-工作" class="headerlink" title="Rust 工作"></a>Rust 工作</h2><ul>
+<li><a href="https://twitter.com/sahuguet/status/839198110819762177" target="_blank" rel="external">Rust developers at Cornell Tech New York.</a></li>
+<li><a href="https://users.rust-lang.org/t/jobs-in-rust-development/3628/4" target="_blank" rel="external">Rust engineer at a startup in San Francisco.</a></li>
+</ul>
+<p>Tweet我们<a href="https://twitter.com/ThisWeekInRust" target="_blank" rel="external">@ThisWeekInRust</a>让你提供的机会列在这里。</p>
+<h2 id="本周摘引"><a href="#本周摘引" class="headerlink" title="本周摘引"></a>本周摘引</h2><blockquote>
+<p>#rust语言中, None总是一个Option<_>。</_></p>
+</blockquote>
+<p>— <a href="https://twitter.com/llogiq/status/837411901437018113" target="_blank" rel="external">llogiq on Twitter</a>.</p>
+<p>感谢<a href="https://users.rust-lang.org/t/twir-quote-of-the-week/328/363" target="_blank" rel="external">Johan Sigfrids的推荐</a>。 <a href="http://users.rust-lang.org/t/twir-quote-of-the-week/328" target="_blank" rel="external">欢迎你推荐下周的摘引</a>。</p>
+<p>《本周 Rust 语言动态》 编辑：<a href="https://github.com/nasa42" target="_blank" rel="external">nasa42</a>，<a href="https://github.com/llogiq" target="_blank" rel="external">llogiq</a>和<a href="https://github.com/brson" target="_blank" rel="external">brson</a> 译者：<a href="https://github.com/junhwong" target="_blank" rel="external">码代码的六月</a></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/20170312/rust/005-lifetime/" data-toggle="tooltip" data-placement="top"
+                           title="04.成也生命周期败也生命周期《以用促学之rust语言实践》">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                         data-thread-key="20170314/rust/this-week-in-rust-173/"
+                         data-title="本周 Rust 语言动态，第 173 周(2017-12)"
+                         data-url="https://jun.alu.red/20170314/rust/this-week-in-rust-173/">
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#来自-Rust-社区的更新"><span class="toc-text">来自 Rust 社区的更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新闻和博客"><span class="toc-text">新闻和博客</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本周的-Crate"><span class="toc-text">本周的 Crate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#呼吁参与"><span class="toc-text">呼吁参与</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#来自Rust核心的更新"><span class="toc-text">来自Rust核心的更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新贡献者"><span class="toc-text">新贡献者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#核准的-RFC"><span class="toc-text">核准的 RFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终讨论期"><span class="toc-text">最终讨论期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新的RFC"><span class="toc-text">新的RFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RFC风格"><span class="toc-text">RFC风格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#即将举行的活动"><span class="toc-text">即将举行的活动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rust-工作"><span class="toc-text">Rust 工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本周摘引"><span class="toc-text">本周摘引</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#This Week in Rust"
+                           title="This Week in Rust">This Week in Rust</a>
+                        
+                        <a class="tag" href="/tags/#编程语言"
+                           title="编程语言">编程语言</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'junhwong';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = 'acbea2bd89f2d78a0bdb6a117c0fb477';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>

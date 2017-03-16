@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        码代码的六月
+        04.成也生命周期败也生命周期《以用促学之rust语言实践》｜码代码的六月
         
     </title>
 
-    <link rel="canonical" href="https://jun.alu.red/tags/xview/">
+    <link rel="canonical" href="https://jun.alu.red/20170312/rust/005-lifetime/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "false" data-istags="true
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
 " data-ishome = "false" >
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -124,200 +124,174 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="/images/avatar.jpg"/>
-                        <h5><a href="/about/">码代码的六月</a></h5>
-                        <p>正在学会分享的全栈汪</p>
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>04.成也生命周期败也生命周期《以用促学之rust语言实践》</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-03-12
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#生命周期"
+                           title="生命周期">生命周期</a>
+                        
+                        <a class="tag" href="/tags/#编译器"
+                           title="编译器">编译器</a>
+                        
+                        <a class="tag" href="/tags/#模板引擎"
+                           title="模板引擎">模板引擎</a>
+                        
                     </div>
                 </div>
             </div>
-        </header>
-    </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
-
-
-
-<div class="post-preview "
-     style="background-image: url('')">
-    <a href="/20170302/xview/template/">
-        <h2 class="post-title">
-            新的模板引擎，躁起来吧！
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2017-03-02
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                前端框架随着Javascript和互联网的发展是如雨后春笋一样不断的出现，如：ReactJS, AngularJS, VUE等等它们各有优缺点但最终目的是一样的，那就是操作浏览器/原生端元素(可以通俗的理解为 DOM ), 每个框架因为理念和技术(初期实现)的不同而造成再模板语法的不同，我们下面..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
-</ul>
-
-
-        </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
-
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
-                    
-                    <img src="/images/avatar.jpg"/>
-                    
-                    <h5><a href="/about/">码代码的六月</a></h5>
-                    
-                    <p>正在学会分享的全栈汪</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
-                        
-                        
-                        
-
-                        
-                        <li>
-                            <a target="_blank" href="http://weibo.com/junhwong">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
-                        
-
-                        
-
-                        
-                        <li>
-                            <a target="_blank" href="https://github.com/junhwong">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
-                        
-                        
-                        <li>
-                            <a target="_blank" href="http://i.youku.com/junhwong">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa  fa-stack-1x fa-inverse">优</i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
-                    
-                    
-                    <a href="/tags/#rust" title="rust"
-                       rel="6">rust</a>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    <a href="/tags/#前端" title="前端"
-                       rel="2">前端</a>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                </div>
-            </section>
-            
-
-            
-
         </div>
     </div>
-</div>
+    <div class="post-title-haojen">
+        <span>
+            04.成也生命周期败也生命周期《以用促学之rust语言实践》
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>TODO: …</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">error[E0495]: cannot infer an appropriate lifetime for lifetime parameter `&apos;a` due to conflicting requirements</div><div class="line">   --&gt; src/core/parser/mod.rs:162:23</div><div class="line">    |</div><div class="line">162 |         let mut tag = ast::DomNode::new(tok);</div><div class="line">    |                       ^^^^^^^^^^^^^^^^^</div><div class="line">    |</div><div class="line">note: first, the lifetime cannot outlive the lifetime &apos;a as defined on the body at 161:68...</div><div class="line">   --&gt; src/core/parser/mod.rs:161:69</div><div class="line">    |</div><div class="line">161 |     fn parse_dom_tag(&amp;mut self, tok: Token&lt;&apos;a&gt;) -&gt; ast::DomNode&lt;&apos;a&gt; &#123;</div><div class="line">    |                                                                     ^</div><div class="line">note: ...so that expression is assignable (expected core::token::Token&lt;&apos;_&gt;, found core::token::Token&lt;&apos;a&gt;)</div><div class="line">   --&gt; src/core/parser/mod.rs:162:41</div><div class="line">    |</div><div class="line">162 |         let mut tag = ast::DomNode::new(tok);</div><div class="line">    |                                         ^^^</div><div class="line">    = note: but, the lifetime must be valid for the static lifetime...</div><div class="line">note: ...so that the type `[closure@src/core/parser/mod.rs:176:38: 214:10 tag:&amp;core::ast::dom::DomNode&lt;&apos;_&gt;]` will meet its requ</div><div class="line">ired lifetime bounds</div><div class="line">   --&gt; src/core/parser/mod.rs:176:29</div><div class="line">    |</div><div class="line">176 |         self.set_breakpoint(Box::new(|owner: &amp;mut Parser| -&gt; bool &#123;</div><div class="line">    |                             ^</div><div class="line"></div><div class="line">error: aborting due to previous error</div></pre></td></tr></table></figure>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/20170314/rust/this-week-in-rust-173/" data-toggle="tooltip" data-placement="top"
+                           title="本周 Rust 语言动态，第 173 周(2017-12)">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/20170308/rust/004-macros/" data-toggle="tooltip" data-placement="top"
+                           title="04.宏Macro详解《以用促学之rust语言实践》">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                         data-thread-key="20170312/rust/005-lifetime/"
+                         data-title="04.成也生命周期败也生命周期《以用促学之rust语言实践》"
+                         data-url="https://jun.alu.red/20170312/rust/005-lifetime/">
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#生命周期"
+                           title="生命周期">生命周期</a>
+                        
+                        <a class="tag" href="/tags/#编译器"
+                           title="编译器">编译器</a>
+                        
+                        <a class="tag" href="/tags/#模板引擎"
+                           title="模板引擎">模板引擎</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'junhwong';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->
