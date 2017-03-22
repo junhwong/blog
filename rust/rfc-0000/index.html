@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        Rust RFCs｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/rust/rfc-0000/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>Rust RFCs</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-03-18
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#rfc"
+                           title="rfc">rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-rfc"
+                           title="rust-rfc">rust-rfc</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            Rust RFCs
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h1 id="Rust-RFCs"><a href="#Rust-RFCs" class="headerlink" title="Rust RFCs"></a>Rust RFCs</h1><p>译者：开头先说几句，翻译这个是想熟悉Rust的开发流程、规范和想法。所以我不保证会全部所有RFC文档都会翻译（努力多翻译一些）。另外，由于英语水平、对Rust的熟悉程度以及提及的RFC提案的理解程度加上时间匆忙等原因，我想错误会很多请大家包含和指正<a href="https://github.com/junhwong" target="_blank" rel="external">github</a>或<a href="//jun.alu.red">博客</a>。</p>
+<p>许多更改，包括Bug的修复和文档的完善都能通过常规的Github PR工作流程来实施和审查。</p>
+<p>一些改变虽然是“实质性的”，我们要求通过一点设计流程来使Rust社区和<a href="http://www.rust-lang.org/team.html" target="_blank" rel="external">小组</a>之间产生共识。</p>
+<p>“RFC” （请求评议）流程的目的是提供新功能进入Rust语言和标准库的一致性和控制途径，是所有利益相关者都能对Rust语言的进展方向有信心。</p>
+<h2 id="当你需要遵循这个过程"><a href="#当你需要遵循这个过程" class="headerlink" title="当你需要遵循这个过程"></a>当你需要遵循这个过程</h2><p>如果你打算让Rust、Cargo、Crates.io或RFC流程的改变成为“实质性的”，则需要遵循这个过程。<br>构成“实质性的”改变是基于社区规范，并且取决于你提议改变的生态系统的部分，但也包括以下的。</p>
+<ul>
+<li>语言中的任何的语义或语法改变都不是一个Bug修复。</li>
+<li>移除语言特性，包括这些语言特性开关。</li>
+<li>改变编译器和库之间的接口，包括lang条目和内置函数。</li>
+<li>增加<code>标准库</code></li>
+</ul>
+<p>不需要RFC的改变：</p>
+<ul>
+<li>改编，整理，重构，或其它方式的“改变形状但不改变本意”。</li>
+<li>增加对目标严禁性的改善，量化标准(排除警告，速度的提升，更好的平台覆盖，更多的并行能力，拦截更多的错误，等等。 )</li>
+<li>增加只能被其他Rust开发者注意到，但Rust用户不可见的改变。</li>
+</ul>
+<p>如果你提交一个PR以实现一个没有经过RFC的新功能，它可能会被关闭并有礼貌的请你先提交一个RFC。</p>
+<p>当你需要得到更多的RFC细节，请看下面具体的指南，它们都与之对应着Rust社区<a href="http://www.rust-lang.org/team.html" target="_blank" rel="external">小组</a></p>
+<ul>
+<li><a href="https://github.com/rust-lang/rfcs/blob/master/lang_changes.md" target="_blank" rel="external">语言的更改</a></li>
+<li><a href="https://github.com/rust-lang/rfcs/blob/master/libs_changes.md" target="_blank" rel="external">库的更改</a></li>
+<li><a href="https://github.com/rust-lang/rfcs/blob/master/compiler_changes.md" target="_blank" rel="external">编译器的更改</a>。</li>
+</ul>
+<h2 id="创建RFC之前"><a href="#创建RFC之前" class="headerlink" title="创建RFC之前"></a>创建RFC之前</h2><p>一个草率的RFC提案可能损害其通过评审的机会。低质量的提案，被早期提案拒绝的功能，或者那些不适合近期路线图的，可能被快速拒绝。其中可能对无准备的即兴贡献者失去兴趣。<br>在RFC之前做些准备会使这个过程更平滑。</p>
+<p>虽然提交RFC前的准备不是唯一的方式，它通常是一个好主义，从其它项目获得反馈，开发者能预先确定这个RFC是可取的：<br>需要努力协商使对项目有一致的影响建立共识。</p>
+<p>撰写和提交RFC的最常见准备有，包括在#rust-internals谈论这个想法，在<a href="https://github.com/rust-lang/rfcs/issues" target="_blank" rel="external">RFC issue tracker</a>上对想法进行辩论和收集归档，<br>不定期的在<a href="http://internals.rust-lang.org/" target="_blank" rel="external">the developer discussion forum</a>上发帖对’pre-RFCs’进行早期的评复。</p>
+<p>根据经验，长期以来从项目开发者那里收到的令人鼓舞的，特别是相关小组成员的反馈的迹象表面RFC的价值是值得追求的。</p>
+<h2 id="这个过程是什么"><a href="#这个过程是什么" class="headerlink" title="这个过程是什么"></a>这个过程是什么</h2><p>简言之，要获得一个重要的功能添加到Rust，必须首先获得将RFC合并到RFC仓库中形成一个markdown文件。<br>此时RFC是’active’和可以实现的，达到这个目标后包含进Rust。</p>
+<ul>
+<li>Fork RFC仓库 <a href="http://github.com/rust-lang/rfcs" target="_blank" rel="external">http://github.com/rust-lang/rfcs</a></li>
+<li>复制 <code>0000-template.md</code> 到 <code>text/0000-my-feature.md</code>（这里的’my-feature’是描述，并且也不要指定RFC编号）。</li>
+<li>写完这个RFC，并注意细节：在论述RFC设计影响的理解上，不要为了让人信服就刻意隐瞒或替换其中的缺点，这样的动机是很少被接受的。</li>
+<li>提交一个PR。RFC将作为一个PR来从更大的社区中接收设计反馈，作者应该准备对其中的回应做相应的修订。</li>
+<li>每个PR都会被打上与其最相关的小组的标签。</li>
+<li>小组拉取其分类下的RFC请求。小组将对其关闭(对明确不被接受的RFC)或分配一个<em>指导者</em>。指导者是一个熟悉RFC流程的可信的开发者，他将帮组RFC向前推进并确保它们被合适的人看到和审查。</li>
+<li>建立共识和整合反馈。RFC的支持是非常宽泛的很可能这些RFC收不到任何评论来开展进度。分配给你的RFC的这个指导者应该可以帮助你从Rust开发者那里获得反馈，诸如此类。</li>
+<li>指导者可以安排作者和/或相关利益者开会详细的讨论这些问题。</li>
+<li>小组将尽可能的在RFC的PR评论板块中讨论它们。离线讨论会在其中进行总结。</li>
+<li>RFC在很少有在开展期间是不改变的，尤其是替换已经显现的缺点时。你能做些或大或小的编辑，来澄清或改变RFC的构思。但这些改变需要作为PR的一个评论并阐明这些改变。<br>具体来说就是不要压缩或重置PR中已经可见的提交。</li>
+<li>一旦支持者与反对者在阐述和辩护的交流稳定后，RFC将进入<em>最后评议期</em>(FCP)。这是社区对这个PR最后的评论机会，并提醒小组的所有成员认识这个RFC。</li>
+<li>FCP最后的一周。如果小组成员之间不能达成一致，它可能被延长。在FCP的结束时，小组将通过合并PR和分配RFC编号（与PR编号相对应）来接受RFC，<br>此时RFC是’active’的，或关闭PR来拒绝。小组负责作出具体如何的决定。</li>
+</ul>
+<h2 id="指导者角色"><a href="#指导者角色" class="headerlink" title="指导者角色"></a>指导者角色</h2><p>在分类期间，每个RFC都将被关闭或从相关小组中分配一个指导者。指导者这个角色是用来推动通过RFC流程。指导者一开始会简单阅读RFC里的细节并提供一个初始反馈。指导者也可能征求那些对这个RFC有强烈意见的人的反馈。当这些反馈整合并看起来稳定后，他会和/或小组长宣布其进入FCP。通常，这是FCP结束我们实际作出决定之前的“提前”的想法反馈， 决定是否接受RFC在RFC的讨论板块中是显而易见的。有时，他们可能讨论已经停滞但未达成一致，像这种情况将由相关小组来作出决定。</p>
+<h2 id="RFC的生命周期"><a href="#RFC的生命周期" class="headerlink" title="RFC的生命周期"></a>RFC的生命周期</h2><p>一旦RFC来到active的阶段，作者就可以实现并提交该功能的PR到Rust库了。’active’不是一个橡皮图章(译：指随意不经审查就批准)，并且仍然不意味着最终就一定能合并该功能。它只是原则上所有利益相关者都同意和可以合并。</p>
+<p>此外，事实上已经接受并处于’active’的RFC，意味着没有分配实现它的优先级。<br>也不意味哪个Rust开发者被已经分配来实现该功能的任务。虽然不是<em>必须</em>由RFC的作者来实现它们，目前来看这是RFC实现的最有效方式：作者不要期待其它项目开发者有责任来实现他们接受的功能。</p>
+<p>可以在后续的PR中修改活动的RFC。我们努力以最后反映的构思的方式来编写RFC；但这种方式的性质意味着我们不能预料到每次合并的RFC在它下次主要发布时的最终实际反映的构思。</p>
+<p>一般来说，一旦被接受，RFC就不应该再发生实质性的改动。只有非常小的改变能作为修订提交。大的实质性的改变都应该是个新的RFC，并添加一个记录到源RFC。判断是否是“非常小的改变”将由小组来决定。这里有些RFC准则里小组的具体准则 <a href="https://github.com/rust-lang/rfcs/blob/master/lang_changes.md" target="_blank" rel="external">语言</a>,<br><a href="https://github.com/rust-lang/rfcs/blob/master/libs_changes.md" target="_blank" rel="external">库</a>, and <a href="https://github.com/rust-lang/rfcs/blob/master/compiler_changes.md" target="_blank" rel="external">编译器</a>.</p>
+<h2 id="RFC的评审"><a href="#RFC的评审" class="headerlink" title="RFC的评审."></a>RFC的评审.</h2><p>当RFC请求拉取时，指导者者可能安排作者和/或相关利益者开会讨论更深入的问题，某些情况会在小组的主题会议中讨论。<br>无论哪种种都会将会议记录会发帖到RFC的PR上。</p>
+<p>小组会在搞清楚这个RFC的得失后作出决定。这些决定可能在任何时候作出，但是小组会定期发布决定。<br>当对RFC作出合并或关闭的决定时，如果作出决定的理由在板块中讨论的不够清楚，那么小组也会发帖阐述具体理由。</p>
+<h2 id="实现RFC"><a href="#实现RFC" class="headerlink" title="实现RFC"></a>实现RFC</h2><p>一些接受的体现了重要特性的RFC需要立即实现。另一些接受的RFC所体现的功能需要等到那些开发者喜欢时才做。<br>在RFC仓库中每个接受的RFC都有与之关联的issue来跟踪它的实现；<br>因此，团队就可以通过使用分类流程来对Rust仓库里的issue指定优先级。</p>
+<p>RFC的作者没有义务实现它。<br>当然，在RFC接受后欢迎它的作者(喜欢任何其他开发人员)来评审。</p>
+<p>如果你有兴趣实现一个’active’的RFC，但不能确定是否经有人在做了，可以随时提问（例如：在相关的issue什么留言）。</p>
+<h2 id="推迟RFC"><a href="#推迟RFC" class="headerlink" title="推迟RFC"></a>推迟RFC</h2><p>有些RFC的PR在关闭(作为拒绝流程的一部分)的同时被标记了’推迟(postponed)’的标签。<br>一个标记为’推迟’来关闭的RFC，是应为在直道未来的某个时间以前我们不想去评估该提案和实现它所描述的功能，我们相信可以等到那时才做。<br>历史上，’推迟’标记是用于推迟功能到1.0以后。被推迟的PR可能在合适的时机重新打开。<br>我们没有任何正式的流程来规范推迟，你可以询问相关小组。</p>
+<p>通常，被标记为’推迟’的RFC都是通过了首轮的非正式评估，即：“我们认为我们可能考虑作出些变动，如RFC的PR大纲描述的那些或一些半明显的变化”<br>（当后一种情况的答案是“不”的时候，那么合适的相应是关闭，而非推迟）</p>
+<h2 id="帮助这些非正式流程"><a href="#帮助这些非正式流程" class="headerlink" title="帮助这些非正式流程"></a>帮助这些非正式流程</h2><p>这个过程的目的是为了当前合理的情况。<br>像往常一样，我们试图让这个过程由共识和社区规范来推动，而不必强加更多环节。</p>
+<p>版本：<a href="https://github.com/rust-lang/rfcs/commit/0ba091cbe24b2961d65c71d1310ec43910c38f71" target="_blank" rel="external">0ba091c</a> 译者：<a href="https://github.com/junhwong" target="_blank" rel="external">码代码的六月</a> 时间：2017年3月28日</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/rust/this-week-in-rust-173/" data-toggle="tooltip" data-placement="top"
+                           title="本周 Rust 语言动态，第 173 周(2017-12)">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Rust-RFCs"><span class="toc-text">Rust RFCs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#当你需要遵循这个过程"><span class="toc-text">当你需要遵循这个过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建RFC之前"><span class="toc-text">创建RFC之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#这个过程是什么"><span class="toc-text">这个过程是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指导者角色"><span class="toc-text">指导者角色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RFC的生命周期"><span class="toc-text">RFC的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RFC的评审"><span class="toc-text">RFC的评审.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现RFC"><span class="toc-text">实现RFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推迟RFC"><span class="toc-text">推迟RFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#帮助这些非正式流程"><span class="toc-text">帮助这些非正式流程</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#rfc"
+                           title="rfc">rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-rfc"
+                           title="rust-rfc">rust-rfc</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = 'acbea2bd89f2d78a0bdb6a117c0fb477';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>
