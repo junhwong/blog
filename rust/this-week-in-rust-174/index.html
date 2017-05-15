@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        本周 Rust 语言动态，第 174 周(2017-13)｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/rust/this-week-in-rust-174/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>本周 Rust 语言动态，第 174 周(2017-13)</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-03-24
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#This Week in Rust"
+                           title="This Week in Rust">This Week in Rust</a>
+                        
+                        <a class="tag" href="/tags/#编程语言"
+                           title="编程语言">编程语言</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            本周 Rust 语言动态，第 174 周(2017-13)
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>2017年3月24日第13周，译自：<a href="https://this-week-in-rust.org/blog/2017/03/21/this-week-in-rust-174/" target="_blank" rel="external">This Week in Rust 174</a></p>
+<p>你好，欢迎来到新一期的《本周 Rust 语言动态》。<a href="http://rust-lang.org/" target="_blank" rel="external">Rust</a> 是一门在安全、并发和速度上力争上游的系统编程语言。这是对Rust语言的开发进度和社区等相关动态的一周摘要。如想要提名请在Tweet上<a href="https://twitter.com/ThisWeekInRust" target="_blank" rel="external">@ThisWeekInRust</a>或者提<a href="https://github.com/cmr/this-week-in-rust" target="_blank" rel="external">PR</a>。我们热烈欢迎参与和<a href="https://github.com/rust-lang/rust/blob/master/CONTRIBUTING.md" target="_blank" rel="external">贡献</a>(译者：我也欢迎参与翻译和纠错)。</p>
+<p>《本周 Rust 语言动态》是在<a href="https://github.com/cmr/this-week-in-rust" target="_blank" rel="external">GitHub</a>上公开编辑的。如果你在周发布中找到任何错误，请提交 <a href="https://github.com/cmr/this-week-in-rust/pulls" target="_blank" rel="external">PR</a>。</p>
+<p>译者：如果你发现有翻译错误或与原文版本不一致请在<a href="//jun.alu.red">博客上</a>留言。</p>
+<h1 id="来自-Rust-社区的更新"><a href="#来自-Rust-社区的更新" class="headerlink" title="来自 Rust 社区的更新"></a>来自 Rust 社区的更新</h1><h2 id="新闻和博客"><a href="#新闻和博客" class="headerlink" title="新闻和博客"></a>新闻和博客</h2><ul>
+<li><a href="https://blog.rust-lang.org/2017/03/16/Rust-1.16.html" target="_blank" rel="external">发表Rust 1.16</a>. </li>
+<li><a href="https://github.com/stevedonovan/gentle-intro" target="_blank" rel="external">Rust浅析</a>. 助你开始Rust系列教程.</li>
+<li><a href="https://silverwingedseraph.net/programming/2017/03/13/piston-a-game-library-in-rust.html" target="_blank" rel="external">Piston入门，Rust中的一个游戏库</a>.</li>
+<li><a href="https://ferrisellis.com/posts/rust-implementing-units-for-types/" target="_blank" rel="external">Rust中的数学距离：单位之间安全性和正确性。</a>.</li>
+<li><a href="https://pyfisch.org/blog/rendering-vector-map-tiles/" target="_blank" rel="external">渲染矢量贴图 (Rust + asm.js demo)</a>.</li>
+<li><a href="https://aimlesslygoingforward.com/blog/2017/03/18/zeromq-communication-between-python-and-rust/" target="_blank" rel="external">Python与Rust之间的ZeroMQ通信</a>.</li>
+<li><a href="https://tokio.rs/blog/tokio-io/" target="_blank" rel="external">发表tokio-io crate</a>.</li>
+<li><a href="https://github.com/Microsoft/vscode/pull/22722" target="_blank" rel="external">VSCode添加对nightly版本的ripgrep支持</a>. ripgrep 是用Rust写的面向行的搜索工具。</li>
+<li>[视频] <a href="https://www.youtube.com/watch?v=eH5JgMlNE8o" target="_blank" rel="external">Jeremy Soller, Redox OS的创始人 - 采访</a>.</li>
+<li>[视频] <a href="https://www.youtube.com/watch?v=iEvYlKGlAPs" target="_blank" rel="external">Rust 游戏演示 - Box crash</a>. <a href="https://github.com/juchiast/boxcrash" target="_blank" rel="external">源码</a>.</li>
+<li><a href="https://guillaumegomez.github.io/this-week-in-rust-docs/blog/this-week-in-rust-docs-48" target="_blank" rel="external">本周 Rust 文档 48</a>.</li>
+<li><a href="https://blog.servo.org/2017/03/20/twis-95/" target="_blank" rel="external">本周 Servo 95</a>.</li>
+</ul>
+<h1 id="本周的-Crate"><a href="#本周的-Crate" class="headerlink" title="本周的 Crate"></a>本周的 Crate</h1><p>由于缺乏推荐我们这周没有展示Crate。抱歉。</p>
+<p><a href="https://users.rust-lang.org/t/crate-of-the-week/2704" target="_blank" rel="external">提交下周你的推荐和参与投票</a></p>
+<h1 id="呼吁参与"><a href="#呼吁参与" class="headerlink" title="呼吁参与"></a>呼吁参与</h1><p>始终想为开源项目贡献，但不知道从哪里开始？ 每周我们强调Rust社区的一些任务，让你选择并开始！</p>
+<p>这些任务中可能会有可能指点你的导师，访问任务页面了解详情。</p>
+<ul>
+<li><a href="https://www.reddit.com/r/rust/comments/600mwc/psa_hey_rust_users_especially_library_authors/" target="_blank" rel="external">嘿，crate作者们，请开始针对Rust的beta版进行回归测试</a>.</li>
+<li><a href="https://underhanded.rs/blog/2016/12/15/underhanded-rust.en-US.html" target="_blank" rel="external">Underhanded Rust语言竞赛</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/rustup.rs/issues/987" target="_blank" rel="external">rustup: 通过脚本安装失败的错误消息</a>.</li>
+<li><a href="https://github.com/rust-lang-nursery/rustup.rs/issues/992" target="_blank" rel="external">rustup: 使用panic=abort构建</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/rustup.rs/issues/940" target="_blank" rel="external">rustup: 帮助改善代码缩进</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/rustup.rs/issues/994" target="_blank" rel="external">rustup: 编写自定义位置安装的CARGO_HOME 和 RUSTUP_HOME环境变量的用例文档</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/rustup.rs/issues/954" target="_blank" rel="external">rustup: 使用这个链接的工具链编写文档</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/rustup.rs/issues/990" target="_blank" rel="external">rustup: “update not yet available” 消息应该不是个错</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/rustup.rs/issues/993" target="_blank" rel="external">rustup: 使用reqwest替换crate的自定义下载</a>.</li>
+<li><a href="https://github.com/rust-lang-nursery/bitflags/issues/63" target="_blank" rel="external">bitflags: 从标志位上隐藏@_impl的实现细节! rustdoc</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/64" target="_blank" rel="external">bitflags: 空的标志位无益Debug的表现</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/65" target="_blank" rel="external">bitflags: “const” 项后跟一个分号</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/66" target="_blank" rel="external">bitflags: 提及文档中的默认trait</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/75" target="_blank" rel="external">bitflags: 移动文档到crate级别</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/76" target="_blank" rel="external">bitflags: 在Cargo.toml中添加CI徽章</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/77" target="_blank" rel="external">bitflags: 在Cargo.toml中添加关键字和类目</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/78" target="_blank" rel="external">bitflags: 添加crate 属性: html_root_url </a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/79" target="_blank" rel="external">bitflags: 从文档中删除提到稳定的“ssignment_ops”功能</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/81" target="_blank" rel="external">bitflags: 添加宏扩展API的示例</a>.</li>
+<li>[容易] <a href="https://github.com/rust-lang-nursery/bitflags/issues/82" target="_blank" rel="external">bitflags: 实现十六进制,八进制和二进制</a>.</li>
+<li>[容易] <a href="https://github.com/BurntSushi/byteorder/issues/73" target="_blank" rel="external">byteorder: 在toml文件添加类别</a>.</li>
+<li>[容易] <a href="https://github.com/BurntSushi/byteorder/issues/74" target="_blank" rel="external">byteorder: 在toml文件添加CI徽章</a>.</li>
+<li>[medium] <a href="https://github.com/hoodie/notify-rust/issues/13" target="_blank" rel="external">notify-rust: 实现图标和图像</a>.</li>
+<li><a href="https://github.com/rust-lang-nursery/tempdir/issues/15#issuecomment-286513675" target="_blank" rel="external">tempdir: TempDir受到windows上的remove_dir_all不可靠性影响</a>.</li>
+<li>[容易] <a href="https://github.com/servo/servo/issues/15162" target="_blank" rel="external">servo: 寻找有用的东西</a>.</li>
+</ul>
+<p>如果你是一个Rust项目的所有者并在寻找贡献者，请提交任务<a href="https://users.rust-lang.org/t/twir-call-for-participation/4821" target="_blank" rel="external">指南</a>。</p>
+<h1 id="来自Rust核心的更新"><a href="#来自Rust核心的更新" class="headerlink" title="来自Rust核心的更新"></a>来自Rust核心的更新</h1><p><a href="https://github.com/issues?page=6&amp;q=is%3Apr+org%3Arust-lang+is%3Amerged+merged%3A2016-03-13..2016-03-20" target="_blank" rel="external">本周合并117个PR</a>.</p>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/40538" target="_blank" rel="external">1.17 版本库已经稳定</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40589" target="_blank" rel="external"><code>0e+10</code> 现在是一个有效的Rust浮点数</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40482" target="_blank" rel="external">Rust 在macOS上能再次运行1.12之前的版本</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40346" target="_blank" rel="external">将属性传递给程序宏作为“TokenStream”</a> (macro plugin-breaking)</li>
+<li><a href="https://github.com/rust-lang/rust/pull/40583" target="_blank" rel="external">修复 <code>include!(_)</code> 的回归问题</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/39921" target="_blank" rel="external">增加 <code>catch { }</code> 语法到 AST</a> (plugin-breaking)</li>
+<li><a href="https://github.com/rust-lang/rust/pull/40385" target="_blank" rel="external">消除在存储操作数对时的对齐相关行为未定义的问题</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40281" target="_blank" rel="external"><code>TryFrom&lt;Err=_&gt;</code> 现在 <code>TryFrom&lt;Error=_&gt;</code>, 也归类到 <code>FromStr</code></a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40212" target="_blank" rel="external">新的 <code>Utf8Error::error_len</code></a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40539" target="_blank" rel="external">移除<code>Box&lt;Path&gt;</code>的<code>Default</code>实现</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40009" target="_blank" rel="external">移除一些偏离 <code>From&lt;Box&lt;_&gt;&gt;</code> 的实现</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/39799" target="_blank" rel="external">修复<code>fs::create_dir_all(..)</code>里的竞争条件</a></li>
+<li><a href="https://github.com/rust-lang/llvm/pull/66" target="_blank" rel="external">LLVM: 修复内联器 funclet 放松记录</a> (unbreaks MSVC optimizer)</li>
+<li><a href="https://github.com/rust-lang/cargo/pull/3827" target="_blank" rel="external"><code>cargo -vv</code> 现在在<code>warn</code> 级别覆盖检查 </a></li>
+<li><a href="https://github.com/rust-lang/cargo/pull/3843" target="_blank" rel="external"><code>cargo</code> 启用依赖的默认功能来覆盖这些没有的功能</a></li>
+<li><a href="https://github.com/rust-lang/cargo/pull/3839" target="_blank" rel="external"><code>cargo</code> 现在假设<code>--cap-lints</code>功能是可用的</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40564" target="_blank" rel="external">rustdoc显示<code>const</code>项</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/40526" target="_blank" rel="external">再次需要文档</a></li>
+</ul>
+<h2 id="新的贡献者"><a href="#新的贡献者" class="headerlink" title="新的贡献者"></a>新的贡献者</h2><ul>
+<li>David Roundy</li>
+<li>Dawid Ciężarkiewicz</li>
+<li>Petr Zemek</li>
+<li>portal</li>
+<li>projektir</li>
+<li>Russell Mackenzie</li>
+<li>ScottAbbey</li>
+<li>z1mvader</li>
+</ul>
+<h2 id="核准的RFC"><a href="#核准的RFC" class="headerlink" title="核准的RFC"></a>核准的RFC</h2><p>对Rust的更改需要遵守<a href="https://github.com/rust-lang/rfcs#rust-rfcs" target="_blank" rel="external">RFC(对请求的讨论)的进程</a>。这些是本周经核准实现的RFC：</p>
+<ul>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1860" target="_blank" rel="external">RFC 1860: 在<code>core::mem</code>里包含<code>ManuallyDrop</code></a>.</li>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1884" target="_blank" rel="external">RFC 1884: 向核心库添加不稳定的排序</a>.</li>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1869" target="_blank" rel="external">RFC 1869: 使用<code>eprint!</code> and <code>eprintln!</code>来输出标准错误</a>.</li>
+</ul>
+<h2 id="最终讨论期"><a href="#最终讨论期" class="headerlink" title="最终讨论期"></a>最终讨论期</h2><p>每周<a href="https://www.rust-lang.org/team.html" target="_blank" rel="external">团队</a>都会宣布达到<code>最终讨论期</code>的RFC和关键PR的决议。<br>立即表达您的意见<a href="https://github.com/rust-lang/rfcs/labels/final-comment-period" target="_blank" rel="external">This week’s FCPs</a>:</p>
+<ul>
+<li>[处置: 延期] <a href="https://github.com/rust-lang/rfcs/pull/1658" target="_blank" rel="external">回顾规范: 补充 traits</a>.</li>
+<li>[处置: 关闭] <a href="https://github.com/rust-lang/rfcs/pull/1666" target="_blank" rel="external">用<code>fn delimit</code>扩展<code>Hasher</code> trait以支持一次性哈希</a>.</li>
+<li>[处置: 延期] <a href="https://github.com/rust-lang/rfcs/pull/1672" target="_blank" rel="external">基于相关类型的不相容</a>.</li>
+<li>[处置: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1685" target="_blank" rel="external">反对匿名参数</a>.</li>
+<li>[处置: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1695" target="_blank" rel="external">添加 <code>compile_error!</code> 宏到标准库</a>. 当给定错误消息时<code>compile_error !</code>将无条件地导致编译失败。</li>
+<li>[处置: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1769" target="_blank" rel="external">扩展 entry API 以使借用关键字工作</a>.</li>
+<li>[处置: 合并] <a href="https://github.com/rust-lang/rfcs/pull/1859" target="_blank" rel="external">扩展<code>?</code>来操作其它类型</a>.</li>
+<li>[处置: 延期] <a href="https://github.com/rust-lang/rfcs/pull/1910" target="_blank" rel="external">添加一个<code>＃[safe（“Reason”）]</code>来注释为什么不安全的块实际上是安全的</a>.</li>
+<li>[处置: 延期] <a href="https://github.com/rust-lang/rfcs/pull/1945" target="_blank" rel="external">多态数值常数</a>.</li>
+</ul>
+<h2 id="新的RFC"><a href="#新的RFC" class="headerlink" title="新的RFC"></a>新的RFC</h2><ul>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1954" target="_blank" rel="external">提供一个更明确的方式”clone”标准的引用数指针</a>.</li>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1953" target="_blank" rel="external">介绍 Cargo 版本格式</a>.</li>
+<li><a href="https://github.com/rust-lang/rfcs/pull/1951" target="_blank" rel="external">扩展和稳定 <code>impl Trait</code></a>.</li>
+</ul>
+<h2 id="代码风格RFC"><a href="#代码风格RFC" class="headerlink" title="代码风格RFC"></a>代码风格RFC</h2><p><a href="https://github.com/rust-lang-nursery/fmt-rfcs" target="_blank" rel="external">代码风格RFC</a> 是Rust社区决定<a href="https://github.com/rust-lang-nursery/rustfmt" target="_blank" rel="external">Rustfmt</a>代码风格进程的一部分.<br>这个进程与RFC一样, 但在PR前我们尝试达到一个粗略的共识(包括最终评议期).<br>只要喜欢RFC进程，欢迎所以用户评论和提交RFC。<br>如果你想帮助决定Rust代码应该是什么样子，来参与吧！。</p>
+<p>处在最终评议期的issue:</p>
+<ul>
+<li><a href="https://github.com/rust-lang-nursery/fmt-rfcs/issues/71" target="_blank" rel="external">一个模块中类型组的顺序</a>.</li>
+<li><a href="https://github.com/rust-lang-nursery/fmt-rfcs/issues/38" target="_blank" rel="external">where 子句</a></li>
+</ul>
+<p>其它有意义的issue:</p>
+<ul>
+<li><a href="https://github.com/rust-lang-nursery/fmt-rfcs/issues/16" target="_blank" rel="external">表达式 (跟踪 issue)</a></li>
+</ul>
+<h1 id="即将举行的活动"><a href="#即将举行的活动" class="headerlink" title="即将举行的活动"></a>即将举行的活动</h1><ul>
+<li><a href="https://www.meetup.com/opentechschool-berlin/events/238181558/" target="_blank" rel="external">三月22日. OpenTechSchool Berlin - Rust骇客与学习</a>.</li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-community" target="_blank" rel="external">三月22日. Rust社区会议 #rust-community 在 irc.mozilla.org</a>.</li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-docs" target="_blank" rel="external">三月22日. Rust文档团队会议 #rust-docs 在 irc.mozilla.org</a>.</li>
+<li><a href="https://internals.rust-lang.org/t/release-cycle-triage-proposal/3544" target="_blank" rel="external">三月23日. Rust发布分类</a>.</li>
+<li><a href="https://forum.rustplatz.de/t/neues-rust-meetup-in-dresden/156/26" target="_blank" rel="external">三月29日. Neues Rust聚会 in Dresden</a>.</li>
+<li><a href="https://wiki.gnome.org/Hackfests/Rust2017" target="_blank" rel="external">三月29日. GNOME+Rust Hackfest 2017, Mexico City</a>.</li>
+<li><a href="https://www.meetup.com/South-Florida-Rust-Meetup/events/238110251/" target="_blank" rel="external">三月29日. South Florida Rust聚会: 介绍第三部分所有权与借用</a>.</li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-community" target="_blank" rel="external">三月29日. Rust社区团队会议 #rust-community on irc.mozilla.org</a>.</li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-docs" target="_blank" rel="external">三月29日. Rust文档团队会议 #rust-docs on irc.mozilla.org</a>.</li>
+<li><a href="https://underhanded.rs/blog/2016/12/15/underhanded-rust.en-US.html" target="_blank" rel="external">三月31日. Underhanded Rust Contest Submission Deadline</a>.</li>
+<li><a href="http://rust.cologne/2017/04/05/crate-polishing.html" target="_blank" rel="external">四月5 日. Rust User Group Cologne - Crate Polishing</a>.</li>
+<li><a href="https://www.meetup.com/Rust-ATL/events/238104881/" target="_blank" rel="external">四月5 日. Rust Atlanta聚会</a>.</li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-community" target="_blank" rel="external">四月5 日. Rust社区团队会议 #rust-community on irc.mozilla.org</a>.</li>
+<li><a href="https://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust-docs" target="_blank" rel="external">四月5 日. Rust文档团队会议 #rust-docs on irc.mozilla.org</a>.</li>
+<li><a href="https://www.meetup.com/RustDC/events/238221152/" target="_blank" rel="external">四月6 日. Rust DC Learn + Try: tokio</a>.</li>
+<li><a href="https://internals.rust-lang.org/t/release-cycle-triage-proposal/3544" target="_blank" rel="external">四月6 日. Rust发布分类</a>.</li>
+<li><strong><a href="http://2017.rustfest.eu/" target="_blank" rel="external">四月30日. RustFest 2017 - Kyiv, Ukraine</a>.</strong></li>
+</ul>
+<p>如果你正举办Rust活动请添加到<a href="https://www.google.com/calendar/embed?src=apd9vmbc22egenmtu5l6c5jbfc%40group.calendar.google.com" target="_blank" rel="external">活动日历</a> 以获得在这里被提到. 邮件 <a href="mailto:community-team@rust-lang.org" target="_blank" rel="external">Rust 社区团队</a> 访问.</p>
+<h1 id="Rust-工作机会"><a href="#Rust-工作机会" class="headerlink" title="Rust 工作机会"></a>Rust 工作机会</h1><ul>
+<li><a href="https://twitter.com/sahuguet/status/839198110819762177" target="_blank" rel="external">Rust developers at Cornell Tech New York</a>.</li>
+<li><a href="https://users.rust-lang.org/t/jobs-in-rust-development/3628/4" target="_blank" rel="external">Rust engineer at a startup in San Francisco</a>.</li>
+</ul>
+<p><em>Tweet我们 <a href="https://twitter.com/ThisWeekInRust" target="_blank" rel="external">@ThisWeekInRust</a> 提供你发的机会并列举到这里!</em></p>
+<h1 id="本周摘引"><a href="#本周摘引" class="headerlink" title="本周摘引"></a>本周摘引</h1><blockquote>
+<p>Rust语言是个非常陌生地方<br>没有null引用，也没有数据竞争<br>它有它自己的风格<br>但是，一旦编译通过它将不会再打你脸！</p>
+</blockquote>
+<p>— <a href="https://twitter.com/llogiq/status/837266557680168961" target="_blank" rel="external">llogiq on Twitter</a>. 看看他的 <a href="https://twitter.com/llogiq" target="_blank" rel="external">Twitter feed</a> 了解更多rust语言技巧!</p>
+<p><a href="http://users.rust-lang.org/t/twir-quote-of-the-week/328" target="_blank" rel="external">欢迎你推荐下周的摘引</a>!</p>
+<p>《本周 Rust 语言动态》 编辑：<a href="https://github.com/nasa42" target="_blank" rel="external">nasa42</a>，<a href="https://github.com/llogiq" target="_blank" rel="external">llogiq</a>和<a href="https://github.com/brson" target="_blank" rel="external">brson</a> 译者：<a href="https://github.com/junhwong" target="_blank" rel="external">码代码的六月</a></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/rust/rfc-0000/" data-toggle="tooltip" data-placement="top"
+                           title="Rust RFCs">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#来自-Rust-社区的更新"><span class="toc-text">来自 Rust 社区的更新</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#新闻和博客"><span class="toc-text">新闻和博客</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#本周的-Crate"><span class="toc-text">本周的 Crate</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#呼吁参与"><span class="toc-text">呼吁参与</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#来自Rust核心的更新"><span class="toc-text">来自Rust核心的更新</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#新的贡献者"><span class="toc-text">新的贡献者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#核准的RFC"><span class="toc-text">核准的RFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终讨论期"><span class="toc-text">最终讨论期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新的RFC"><span class="toc-text">新的RFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码风格RFC"><span class="toc-text">代码风格RFC</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#即将举行的活动"><span class="toc-text">即将举行的活动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Rust-工作机会"><span class="toc-text">Rust 工作机会</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#本周摘引"><span class="toc-text">本周摘引</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#This Week in Rust"
+                           title="This Week in Rust">This Week in Rust</a>
+                        
+                        <a class="tag" href="/tags/#编程语言"
+                           title="编程语言">编程语言</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = 'acbea2bd89f2d78a0bdb6a117c0fb477';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>
