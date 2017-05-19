@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        RFC-0001 私有字段｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/rust/rfc-0001-private-fields/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>RFC-0001 私有字段</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-05-19
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#rfc"
+                           title="rfc">rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-rfc"
+                           title="rust-rfc">rust-rfc</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            RFC-0001 私有字段
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <ul>
+<li>开始日期: 2014-03-11</li>
+<li>RFC  PR: <a href="https://github.com/rust-lang/rfcs/pull/1" target="_blank" rel="external">rust-lang/rfcs#1</a></li>
+<li>Rust Issue: <a href="https://github.com/rust-lang/rust/issues/8122" target="_blank" rel="external">rust-lang/rust#8122</a></li>
+<li>版   本:<a href="https://github.com/rust-lang/rfcs/commit/4009b546172c558a1cfa0f39dd81c896312f73d5" target="_blank" rel="external">4009b54</a></li>
+</ul>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本RFC是讨论决定将所有结构字段默认为私有可见性。它包含元组结构（tuple structs）和结构体（structural structs）。</p>
+<h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><p>默认私有可见性的理由</p>
+<ul>
+<li><p>对于Rust中的许多类型来说，可见性通常是如何可靠实现的方式。<br>这些类型一般包裹一个FFI的不安全行为或其它特定Rust行为的表象(例如：标准的<code>Vec</code>类型)。<br>要求这些类型加入可见性是不幸地。</p>
+</li>
+<li><p>强制元组结构字段具有非可重写的公开可见性大大降低了这些类型的实用性。<br>元组结构不能用于创建抽象隔离，因为它们总是容易被解构。</p>
+</li>
+<li><p>默认私有能与Rust的其它部分更加一致。所以除了枚举变体(译者：可以理解为枚举类型的字段)外的隐私部分都是默认私有的。<br>无论如何，枚举变体是特殊案例，它们都是插入到父名字空间，因此自然地继承隐私。</p>
+</li>
+<li><p><code>struct</code>类型的公开字段作为API的一部分必须是经过慎重考虑的。<br>这意思是所以结构的访问性都是默认的，那么它的API的定义将更加明确。<br>如果结构不要求加入<code>priv</code>关键字，转而通过要求必须加入 <code>pub</code>关键字来暴露它们的API。</p>
+</li>
+</ul>
+<p>继承隐私的理由(今天的设计)</p>
+<ul>
+<li><p>公开定义如<code>pub struct Point { x: int, y: int }</code>是更简明和易于阅读的。</p>
+</li>
+<li><p>私有定义肯定需要私有字段(来隐藏实现细节)。</p>
+</li>
+</ul>
+<h1 id="详细设计"><a href="#详细设计" class="headerlink" title="详细设计"></a>详细设计</h1><p>当前，rustc有两种策略来处理结构字段的隐私：</p>
+<ul>
+<li>元组结构的字段默认是公开的(包括“新类型结构”)</li>
+<li>结构体的字段(<code>struct Foo { ... }</code>)继承同样隐私的封闭结构。</li>
+</ul>
+<p>本RFC提议将结构体字段和语言其它部分在默认情况下都是私有的。这意味着元组变体和结构体变体的字段默认都是私有的。<br>举例，下面的程序现在是被接受的，但本RFC将拒绝。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">mod</span> inner &#123;</div><div class="line">    <span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">Foo</span></span>(<span class="keyword">u64</span>);</div><div class="line">    <span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">Bar</span></span> &#123; field: <span class="keyword">u64</span> &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</div><div class="line">    inner::Foo(<span class="number">10</span>);</div><div class="line">    inner::Bar &#123; field: <span class="number">10</span> &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="改进结构体"><a href="#改进结构体" class="headerlink" title="改进结构体"></a>改进结构体</h3><p>在语言中公开字段是很有用的功能，因此语法上要求它不是默认私有的语义。<br>结构体已经允许字段上的可见性限定符，<code>pub</code>限定符能够让字段从私有替换为公有。</p>
+<p>此外，<code>priv</code>可见性将不再用于修饰结构字段。<br>类似<code>priv fn</code>是编译错误，<code>priv</code>字段会变成编译错误。</p>
+<h3 id="改进元组结构"><a href="#改进元组结构" class="headerlink" title="改进元组结构"></a>改进元组结构</h3><p>作为结构体的兄弟，它使用具有公开字段的元组结构。本RFC将修改元组结构的文法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tuple_struct := 'struct' ident '(' fields ')' ';'</div><div class="line">fields := field | field ',' fields</div><div class="line">field := type | visibility type</div></pre></td></tr></table></figure>
+<p>例如，这些定义将添加到语言中：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 一个“新类型包裹”私有字段的结构</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Foo</span></span>(<span class="keyword">u64</span>);</div><div class="line"></div><div class="line"><span class="comment">// 一个“新类型包裹”公开字段的结构</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Bar</span></span>(<span class="keyword">pub</span> <span class="keyword">u64</span>);</div><div class="line"></div><div class="line"><span class="comment">// 一个有许多字段的元组结构，它只有第一个和最后一个字段是公开的</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Baz</span></span>(<span class="keyword">pub</span> <span class="keyword">u64</span>, <span class="keyword">u32</span>, <span class="keyword">f32</span>, <span class="keyword">pub</span> <span class="keyword">int</span>);</div></pre></td></tr></table></figure>
+<p>现在元组结构体上的公共字段将保留他们目前的语义。<br>它们可以被构建，解构和参与模式匹配。</p>
+<p>元组结构体上的私有字段将不能有以下行为：</p>
+<ul>
+<li>私有字段不能在模式中绑定(无论是不可辩驳和可辩驳的上下文，如：<code>let</code> 和 <code>match</code>语句)</li>
+<li>私有字段不能在定义它模块之外构造一个元组结构体。</li>
+</ul>
+<p>这些语义行为都紧密地对照结构体私有字段。</p>
+<h3 id="收集统计"><a href="#收集统计" class="headerlink" title="收集统计"></a>收集统计</h3><p>一份简短的涵盖整个<code>mozilla/rust</code>代码仓库所收集的调查统计。<br>虽然不代表所有项目，这个仓库应该能很好的表明现实世界中大多数的结构是什么样的。<br>仓库里的两个库(<code>libstd</code>和<code>librustc</code>)都不是非常在意其隐私。</p>
+<p>这些数字总结了所有结构的所有位置，并且只有记录了结构体，不包含元组结构。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:right">继承隐私</th>
+<th style="text-align:right">默认私有</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>私有字段</td>
+<td style="text-align:right">1418</td>
+<td style="text-align:right">1852</td>
+</tr>
+<tr>
+<td>公开字段</td>
+<td style="text-align:right">2036</td>
+<td style="text-align:right">1602</td>
+</tr>
+<tr>
+<td>所以所有结构</td>
+<td style="text-align:right">551 (52.23%)</td>
+<td style="text-align:right">671 (63.60%)</td>
+</tr>
+<tr>
+<td>所以公开结构</td>
+<td style="text-align:right">468 (44.36%)</td>
+<td style="text-align:right">352 (33.36%)</td>
+</tr>
+<tr>
+<td>混合使用结构</td>
+<td style="text-align:right">36 ( 3.41%)</td>
+<td style="text-align:right">32 ( 3.03%)</td>
+</tr>
+</tbody>
+</table>
+<p>数字清晰的表明主要模式都是全私有字段的结构，现在多数公开字段都可以是私有的(或也许应该！)。<br>此外，这里有1418个<code>priv</code>单词，理论上应该是<code>1852</code>个。本RFC来看有 <code>1602</code>项是需要<code>pub</code>单词。<br>在<code>libc</code>模块中有非常大的一部分FFI结构是要求<code>pub</code>字段的。</p>
+<h3 id="枚举上的影响"><a href="#枚举上的影响" class="headerlink" title="枚举上的影响"></a>枚举上的影响</h3><p>本RFC不会以任何方式影响枚举的变体。所以枚举变体将继续从其它枚举类型继承隐私。<br>这包括枚举中的元组变体的字段以及结构体的字段。</p>
+<h1 id="替代方案"><a href="#替代方案" class="headerlink" title="替代方案"></a>替代方案</h1><p>这个设计的主要替代方案是今天实现的，其中字段继承了外部结构的隐私。其利弊在这个策略在上面讨论过。</p>
+<h1 id="未解决的问题"><a href="#未解决的问题" class="headerlink" title="未解决的问题"></a>未解决的问题</h1><p>如上述统计显示，几乎所有的结构都是全部公开的或全部私有的。 这个RFC提供了一个简单的方法来使结构域都是私有的，但是它显然不提供一种使结构域全部公开的方法。<br>统计显示，<code>pub</code>将必<code>priv</code>写得更少。<br>未来总是可以添加一个方法来指定一个全公开的结构并可以向后兼容的方式。</p>
+<p>话虽如此，无论“所有公开结构”的语法在现在是否是必要的是一个公开的问题。</p>
+<h1 id="译者话"><a href="#译者话" class="headerlink" title="译者话"></a>译者话</h1><p>翻译RFC是想熟悉Rust的开发流程、规范和想法。所以我不保证会全部所有RFC文档都会翻译（努力多翻译一些）。<br>另外，由于英语水平、对Rust的熟悉程度以及提及的RFC提案的理解程度加上时间匆忙等原因，我想错误会很多请大家包含和指正<a href="https://github.com/junhwong" target="_blank" rel="external">github</a>或<a href="//jun.alu.red">博客</a>。</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/rust/this-week-in-rust-174/" data-toggle="tooltip" data-placement="top"
+                           title="本周 Rust 语言动态，第 174 周(2017-13)">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#摘要"><span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#动机"><span class="toc-text">动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#详细设计"><span class="toc-text">详细设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#改进结构体"><span class="toc-text">改进结构体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改进元组结构"><span class="toc-text">改进元组结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#收集统计"><span class="toc-text">收集统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#枚举上的影响"><span class="toc-text">枚举上的影响</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#替代方案"><span class="toc-text">替代方案</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#未解决的问题"><span class="toc-text">未解决的问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#译者话"><span class="toc-text">译者话</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#rfc"
+                           title="rfc">rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-rfc"
+                           title="rust-rfc">rust-rfc</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = 'acbea2bd89f2d78a0bdb6a117c0fb477';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>
