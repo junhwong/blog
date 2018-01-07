@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="null">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="码代码的六月" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        RFC-1774 2017年路线图｜码代码的六月
+        
+    </title>
+
+    <link rel="canonical" href="https://jun.alu.red/rust/rfc-1774-roadmap-2017/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    码代码的六月
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">文章标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/images/post-default.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/images/post-default.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>RFC-1774 2017年路线图</h1>
+                    
+                    <span class="meta">
+                         作者 码代码的六月
+                        <span>
+                          日期 2017-05-24
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#rfc"
+                           title="rfc">rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-rfc"
+                           title="rust-rfc">rust-rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-roadmap"
+                           title="rust-roadmap">rust-roadmap</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            RFC-1774 2017年路线图
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <ul>
+<li>功能名称: N/A</li>
+<li>开始日期: 2016-10-04</li>
+<li>RFC  PR: <a href="https://github.com/rust-lang/rfcs/pull/1774" target="_blank" rel="external">https://github.com/rust-lang/rfcs/pull/1774</a></li>
+<li>Rust Issue: N/A</li>
+<li>版   本:<a href="https://github.com/rust-lang/rfcs/commit/8873a1a16a3c08f82d1df4ed962c377441782755" target="_blank" rel="external">8873a1a</a></li>
+</ul>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>This RFC proposes the <em>2017 Rust Roadmap</em>, in accordance with <a href="https://github.com/rust-lang/rfcs/pull/1728" target="_blank" rel="external">RFC 1728</a>. The goal of the roadmap is to lay out a vision for where the Rust project should be in a year’s time. <strong>This year’s focus is improving Rust’s <em>productivity</em>, while retaining its emphasis on fast, reliable code</strong>. At a high level, by the end of 2017:<br>本RFC是根据<a href="https://github.com/rust-lang/rfcs/pull/1728" target="_blank" rel="external">RFC 1728</a>的<em>2017年Rust路线图</em>的提议。<br>路线图的目标是安排这个年度的Rust项目布局。</p>
+<ul>
+<li>Rust should have a lower learning curve</li>
+<li>Rust should have a pleasant edit-compile-debug cycle</li>
+<li>Rust should provide a solid, but basic IDE experience</li>
+<li>Rust should provide easy access to high quality crates</li>
+<li>Rust should be well-equipped for writing robust, high-scale servers</li>
+<li>Rust should have 1.0-level crates for essential tasks</li>
+<li>Rust should integrate easily into large build systems</li>
+<li>Rust’s community should provide mentoring at all levels</li>
+</ul>
+<p>In addition, we should make significant strides in <em>exploring</em> two areas where<br>we’re not quite ready to set out specific goals:</p>
+<ul>
+<li>Integration with other languages, running the gamut from C to JavaScript</li>
+<li>Usage in resource-constrained environments</li>
+</ul>
+<p>The proposal is based on the <a href="https://blog.rust-lang.org/2016/06/30/State-of-Rust-Survey-2016.html" target="_blank" rel="external">2016 survey</a>, systematic outreach, direct conversations with individual Rust users, and an extensive <a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/" target="_blank" rel="external">internals thread</a>. Thanks to everyone who helped with this effort!</p>
+<h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><p>There’s no end of possible improvements to Rust—so what do we use to guide our<br>thinking?</p>
+<p>The core team has tended to view our strategy not in terms of particular features or<br>aesthetic goals, but instead in terms of <strong>making Rust successful while staying<br>true to its core values</strong>. This basic sentiment underlies much of the proposed<br>roadmap, so let’s unpack it a bit.</p>
+<h2 id="Making-Rust-successful"><a href="#Making-Rust-successful" class="headerlink" title="Making Rust successful"></a>Making Rust successful</h2><h3 id="The-measure-of-success"><a href="#The-measure-of-success" class="headerlink" title="The measure of success"></a>The measure of success</h3><p>What does it mean for Rust to be successful? There are a lot of good answers to<br>this question, a lot of different things that draw people to use or contribute<br>to Rust. But regardless of our <em>personal</em> values, there’s at least one clear<br>measure for Rust’s broad success: <strong>people should be using Rust in<br>production and reaping clear benefits from doing so</strong>.</p>
+<ul>
+<li><p>Production use matters for the obvious reason: it grows the set of<br>stakeholders with potential to invest in the language and ecosystem. To<br>deliver on that potential, Rust needs to be part of the backbone of some major<br>products.</p>
+</li>
+<li><p>Production use measures our <em>design</em> success; it’s the ultimate reality<br>check. Rust takes a unique stance on a number of tradeoffs, which we believe<br>to position it well for writing fast and reliable software. The real test of<br>those beliefs is people using Rust to build large, production systems, on<br>which they’re betting time and money.</p>
+</li>
+<li><p>The <em>kind</em> of production use matters. For Rust to truly be a success, there<br>should be clear-cut reasons people are employing it rather than another<br>language. Rust needs to provide crisp, standout benefits to the organizations<br>using it.</p>
+</li>
+</ul>
+<p>The idea here is <em>not</em> about “taking over the world” with Rust; it’s not about<br>market share for the sake of market share. But if Rust is truly delivering a<br>valuable new way of programming, we should be seeing that benefit in “the real<br>world”, in production uses that are significant enough to help sustain Rust’s<br>development.</p>
+<p>That’s not to say we should expect to see this usage <em>immediately</em>; there’s a<br>long pipeline for technology adoption, so the effects of our work can take a<br>while to appear. The framing here is about our long-term aims. We should be<br>making investments in Rust today that will position it well for this kind of<br>success in the future.</p>
+<h3 id="The-obstacles-to-success"><a href="#The-obstacles-to-success" class="headerlink" title="The obstacles to success"></a>The obstacles to success</h3><p>At this point, we have a fair amount of data about how Rust is reaching its<br>audience, through the <a href="https://blog.rust-lang.org/2016/06/30/State-of-Rust-Survey-2016.html" target="_blank" rel="external">2016 survey</a>, informal conversations, and explicit<br>outreach to (pre-)production shops (writeup coming soon). The data from the<br>survey is generally corroborated by these other venues, so let’s focus on that.</p>
+<p>We asked both current and potential users what most stands in the way of their<br>using Rust, and got some pretty clear answers:</p>
+<ul>
+<li>1 in 4: learning curve</li>
+<li>1 in 7: lack of libraries</li>
+<li>1 in 9: general “maturity” concerns</li>
+<li>1 in 19: lack of IDEs (1 in 4 non-users)</li>
+<li>1 in 20: compiler performance</li>
+</ul>
+<p>None of these obstacles is directly about the core language or <code>std</code>; people are<br>generally happy with what the language offers today. Instead, the connecting<br>theme is <em>productivity</em>—how quickly can I start writing real code? bring up a<br>team? prototype and iterate? debug my code? And so on.</p>
+<p>In other words, our primary challenge isn’t making Rust “better” in the<br>abstract; it’s making people <em>productive</em> with Rust. The need is most pronounced<br>in the early stages of Rust learning, where we risk losing a large pool of<br>interested people if we can’t get them over the hump. Evidence from the survey<br>and elsewhere suggests that once people do get over the initial learning curve,<br>they tend to stick around.</p>
+<p>So how do we pull it off?</p>
+<h3 id="Core-values"><a href="#Core-values" class="headerlink" title="Core values"></a>Core values</h3><p>Part of what makes Rust so exciting is that it attempts to eliminate some<br>seemingly fundamental tradeoffs. The central such tradeoff is between safety<br>and speed. Rust strives for</p>
+<ul>
+<li>uncompromising reliability</li>
+<li>uncompromising performance</li>
+</ul>
+<p>and delivers on this goal largely thanks to its fundamental concept of<br>ownership.</p>
+<p>But there’s a problem: at first glance, “productivity” and “learnability” may<br>seem at odds with Rust’s core goals. It’s common to hear the refrain that<br>“fighting with the borrow checker” is a rite of passage for Rustaceans. Or that<br>removing papercuts would mean glossing over safety holes or performance cliffs.</p>
+<p>To be sure, there are tradeoffs here. But as above, if there’s one thing the<br>Rust community knows how to do, it’s bending the curve around tradeoffs—memory<br>safety without garbage collection, concurrency without data races, and all the<br>rest. We have many examples in the language where we’ve managed to make a<br>feature pleasant to use, while also providing maximum performance and<br>safety—closures are a particularly good example, but there are<br><a href="https://internals.rust-lang.org/t/roadmap-2017-productivity-learning-curve-and-expressiveness/4097" target="_blank" rel="external">others</a>.</p>
+<p>And of course, beyond the core language, “productivity” also depends a lot on<br>tooling and the ecosystem. Cargo is one example where Rust’s tooling provides a<br>huge productivity boost, and we’ve been working hard on other aspects of<br>tooling, like the<br><a href="https://blog.rust-lang.org/2016/08/10/Shape-of-errors-to-come.html" target="_blank" rel="external">compiler’s error messages</a>,<br>that likewise have a big impact on productivity. There’s so much more we can be<br>doing in this space.</p>
+<p>In short, <strong>productivity should be a core value of Rust</strong>. By the end of 2017,<br>let’s try to earn the slogan:</p>
+<ul>
+<li>Rust: fast, reliable, productive—pick three.</li>
+</ul>
+<h1 id="Detailed-design"><a href="#Detailed-design" class="headerlink" title="Detailed design"></a>Detailed design</h1><h2 id="Overall-strategy"><a href="#Overall-strategy" class="headerlink" title="Overall strategy"></a>Overall strategy</h2><p>In the abstract, reaching the kind of adoption we need means bringing<br>people along a series of distinct steps:</p>
+<ul>
+<li>Public perception of Rust</li>
+<li>First contact</li>
+<li>Early play, toy projects</li>
+<li>Public projects</li>
+<li>Personal investment</li>
+<li>Professional investment</li>
+</ul>
+<p>We need to (1) provide “drivers”, i.e. strong motivation to continue through the<br>stages and (2) avoid “blockers” that prevent people from progressing.</p>
+<p>At the moment, our most immediate adoption obstacles are mostly about blockers,<br>rather than a lack of drivers: there are people who see potential value in Rust,<br>but worry about issues like productivity, tooling, and maturity standing in the<br>way of use at scale. The roadmap proposes a set of goals largely angled at<br>reducing these blockers.</p>
+<p>However, for Rust to make sense to use in a significant way in production, it<br>also needs to have a “complete story” for one or more domains of use. The goals<br>call out a specific domain where we are already seeing promising production use,<br>and where we have a relatively clear path toward a more complete story.</p>
+<p>Almost all of the goals focus squarely on “productivity” of one kind or another.</p>
+<h2 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h2><p>Now to the meat of the roadmap: the goals. Each is phrased in terms of a<br><em>qualitative vision</em>, trying to carve out what the <em>experience</em> of Rust should<br>be in one year’s time. The details mention some possible avenues toward a<br>solution, but this shouldn’t be taken as prescriptive.</p>
+<p>These goals are partly informed from the <a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/" target="_blank" rel="external">internals thread</a> about the<br>roadmap. That thread also posed a number of possible additional goals. Of<br>course, part of the work of the roadmap is to allocate our limited resources,<br>which fundamentally means not including some possible goals. Some of the most<br>promising suggestions that didn’t make it into the roadmap proposal itself are<br>included in the Alternatives section.</p>
+<h3 id="Rust-should-have-a-lower-learning-curve"><a href="#Rust-should-have-a-lower-learning-curve" class="headerlink" title="Rust should have a lower learning curve"></a>Rust should have a lower learning curve</h3><p>Rust offers a unique value proposition in part because it offers a unique<br>feature: its ownership model. Because the concept is not (yet!) a widespread one<br>in other languages, it is something most people have to learn from scratch<br>before hitting their stride with Rust. And that often comes on top of other<br>aspects of Rust that may be less familiar. A common refrain is “the first couple<br>of weeks are tough, but it’s oh so worth it.” How many people are bouncing off<br>of Rust in those first couple of weeks? How many team leads are reluctant to<br>introduce Rust because of the training needed? (1 in 4 survey respondents<br>mentioned the learning curve.)</p>
+<p>Here are some strategies we might take to lower the learning curve:</p>
+<ul>
+<li><p><strong>Improved docs</strong>. While the existing Rust book has been successful, we’ve<br>learned a lot about teaching Rust, and there’s a<br><a href="http://words.steveklabnik.com/whats-new-with-the-rust-programming-language" target="_blank" rel="external">rewrite</a><br>in the works. The effort is laser-focused on the key areas that trip people up<br>today (ownership, modules, strings, errors).</p>
+</li>
+<li><p><strong>Gathering cookbooks, examples, and patterns</strong>. One way to quickly get<br>productive in a language is to work from a large set of examples and<br>known-good patterns that can guide your early work. As a community, we could<br>push crates to include more substantial example code snippets, and organize<br>efforts around design patterns and cookbooks. (See<br><a href="https://github.com/rust-lang/rfcs/pull/1774#issuecomment-269359228" target="_blank" rel="external">the commentary on the RFC thread</a><br>for much more detail.)</p>
+</li>
+<li><p><strong>Improved errors</strong>. We’ve already made some<br><a href="https://blog.rust-lang.org/2016/08/10/Shape-of-errors-to-come.html" target="_blank" rel="external">big strides</a><br>here, particularly for ownership-related errors, but there’s surely more room<br>for improvement.</p>
+</li>
+<li><p><strong>Improved language features</strong>. There are a couple of ways that the language<br>design itself can be oriented toward learnability. First, we can introduce new<br>features with an explicit eye toward<br><a href="https://github.com/rust-lang/rfcs/pull/1636" target="_blank" rel="external">how they will be taught</a>. Second,<br>we can improve existing features to make them easier to understand and use –<br>things like non-lexical lifetimes being a major example. There’s already been<br><a href="https://internals.rust-lang.org/t/roadmap-2017-productivity-learning-curve-and-expressiveness/4097/" target="_blank" rel="external">some discussion on internals</a></p>
+</li>
+<li><p><strong>IDEs and other tooling</strong>. IDEs provide a good opportunity for deeper<br>teaching. An IDE can visualize errors, for example <em>showing</em> you the lifetime<br>of a borrow. They can also provide deeper inspection of what’s going on with<br>things like method dispatch, type inference, and so on.</p>
+</li>
+</ul>
+<h3 id="Rust-should-have-a-pleasant-edit-compile-debug-cycle"><a href="#Rust-should-have-a-pleasant-edit-compile-debug-cycle" class="headerlink" title="Rust should have a pleasant edit-compile-debug cycle"></a>Rust should have a pleasant edit-compile-debug cycle</h3><p>The edit-compile-debug cycle in Rust takes too long, and it’s one of the<br>complaints we hear most often from production users. We’ve laid down a good<br>foundation with <a href="https://blog.rust-lang.org/2016/04/19/MIR.html" target="_blank" rel="external">MIR</a> (now turned on by default) and <a href="https://blog.rust-lang.org/2016/09/08/incremental.html" target="_blank" rel="external">incremental compilation</a><br>(which recently hit alpha). But we need to continue pushing hard to actually<br>deliver the improvements. And to fully address the problem, <strong>the improvement<br>needs to apply to large Rust projects, not just small or mid-sized benchmarks</strong>.</p>
+<p>To get this done, we’re also going to need further improvements to the<br>performance monitoring infrastructure, including more benchmarks. Note, though,<br>that the goal is stated <em>qualitatively</em>, and we need to be careful with what we<br>measure to ensure we don’t lose sight of that goal.</p>
+<p>While the most obvious routes are direct improvements like incremental<br>compilation, since the focus here is primarily on development (including<br>debugging), another promising avenue is more usable debug builds. Production<br>users often say “debug binaries are too slow to run, but release binaries are<br>too slow to build”. There may be a lot of room in the middle.</p>
+<p>Depending on how far we want to take IDE support (see below), pushing<br>incremental compilation up through the earliest stages of the compiler may also<br>be important.</p>
+<h3 id="Rust-should-provide-a-solid-but-basic-IDE-experience"><a href="#Rust-should-provide-a-solid-but-basic-IDE-experience" class="headerlink" title="Rust should provide a solid, but basic IDE experience"></a>Rust should provide a solid, but basic IDE experience</h3><p>For many people—even whole organizations—IDEs are an essential part of the<br>programming workflow. In the survey, 1 in 4 respondents mentioned requiring IDE<br>support before using Rust seriously. Tools like <a href="https://github.com/phildawes/racer" target="_blank" rel="external">Racer</a> and the <a href="https://intellij-rust.github.io/" target="_blank" rel="external">IntelliJ</a> Rust<br>plugin have made great progress this year, but <a href="https://internals.rust-lang.org/t/introducing-rust-language-server-source-release/4209/" target="_blank" rel="external">compiler integration</a> in its<br>infancy, which limits the kinds of tools that general IDE plugins can provide.</p>
+<p>The problem statement here says “solid, but basic” rather than “world-class” IDE<br>support to set realistic expectations for what we can get done this year. Of<br>course, the precise contours will need to be driven by implementation work, but<br>we can enumerate some basic constraints for such an IDE here:</p>
+<ul>
+<li>It should be <strong>reliable</strong>: it shouldn’t crash, destroy work, or give inaccurate<br>results in situations that demand precision (like refactorings).</li>
+<li>It should be <strong>responsive</strong>: the interface should never hang waiting on the<br>compiler or other computation. In places where waiting is required, the<br>interface should update as smoothly as possible, while providing<br>responsiveness throughout.</li>
+<li>It should provide <strong>basic functionality</strong>. At a minimum, that’s: syntax<br>highlighting, basic code navigation (e.g. go-to-definition), code completion,<br>build support (with Cargo integration), error integration, and code<br>formatting.</li>
+</ul>
+<p>Note that while some of this functionality is available in existing IDE/plugin<br>efforts, a key part of this initiative is to (1) lay the foundation for plugins<br>based on compiler integration (2) pull together existing tools into a single<br>service that can integrate with multiple IDEs.</p>
+<h3 id="Rust-should-provide-easy-access-to-high-quality-crates"><a href="#Rust-should-provide-easy-access-to-high-quality-crates" class="headerlink" title="Rust should provide easy access to high quality crates"></a>Rust should provide easy access to high quality crates</h3><p>Another major message from the survey and elsewhere is that Rust’s ecosystem,<br>while growing, is still immature (1 in 9 survey respondents mentioned<br>this). Maturity is not something we can rush. But there are steps we can take<br>across the ecosystem to help improve the quality and discoverability of crates,<br>both of which will help increase the overall sense of maturity.</p>
+<p>Some avenues for quality improvement:</p>
+<ul>
+<li>Provide stable, extensible test/bench frameworks.</li>
+<li>Provide more push-button CI setup, e.g. have <code>cargo new</code> set up Travis/Appveyor.</li>
+<li>Restart the <a href="http://aturon.github.io/" target="_blank" rel="external">API guidelines</a> project.</li>
+<li>Use badges on crates.io to signal various quality metrics.</li>
+<li>Perform API reviews on important crates.</li>
+</ul>
+<p>Some avenues for discoverability improvement:</p>
+<ul>
+<li>Adding categories to crates.io, making it possible to browse lists like<br>“crates for parsing”.</li>
+<li>More sophisticated ranking and/or curation.</li>
+</ul>
+<p>A number of ideas along these lines were discussed in the <a href="https://internals.rust-lang.org/t/proposal-the-rust-platform/3745" target="_blank" rel="external">Rust Platform thread</a>.</p>
+<h3 id="Rust-should-be-well-equipped-for-writing-robust-high-scale-servers"><a href="#Rust-should-be-well-equipped-for-writing-robust-high-scale-servers" class="headerlink" title="Rust should be well-equipped for writing robust, high-scale servers"></a>Rust should be well-equipped for writing robust, high-scale servers</h3><p>The biggest area we’ve seen with interest in production Rust so far is the<br>server, particularly in cases where high-scale performance, control, and/or<br>reliability are paramount. At the moment, our ecosystem in this space is<br>nascent, and production users are having to build a lot from scratch.</p>
+<p>Of the specific domains we might target for having a more complete story, Rust<br>on the server is the place with the clearest direction and momentum. In a year’s<br>time, it’s within reach to drastically improve Rust’s server ecosystem and the<br>overall experience of writing server code. The relevant pieces here include<br>foundations for async IO, language improvements for async code ergonomics,<br>shared infrastructure for writing services (including abstractions for<br>implementing protocols and middleware), and endless interfaces to existing<br>services/protocols.</p>
+<p>There are two reasons to focus on the robust, high-scale case. Most importantly,<br>it’s the place where Rust has the clearest value proposition relative to other<br>languages, and hence the place where we’re likeliest to achieve significant,<br>quality production usage (as discussed earlier in the RFC). More generally, the<br>overall server space is <em>huge</em>, so choosing a particular niche provides<br>essential focus for our efforts.</p>
+<h3 id="Rust-should-have-1-0-level-crates-for-essential-tasks"><a href="#Rust-should-have-1-0-level-crates-for-essential-tasks" class="headerlink" title="Rust should have 1.0-level crates for essential tasks"></a>Rust should have 1.0-level crates for essential tasks</h3><p>Rust has taken a decidedly lean approach to its standard library, preferring for<br>much of the typical “batteries included” functionality to live externally in the<br>crates.io ecosystem. While there are a lot of benefits to that approach, it’s<br>important that we do in fact provide the batteries somewhere: we need 1.0-level<br>functionality for essential tasks. To pick just one example, the <code>rand</code> crate<br>has suffered from a lack of vision and has effectively stalled before reaching<br>1.0 maturity, despite its central importance for a non-trivial part of the<br>ecosystem.</p>
+<p>There are two basic strategies we might take to close these gaps.</p>
+<p>The first is to identify a broad set of “essential tasks” by, for example,<br>finding the commonalities between large “batteries included” standard libraries,<br>and focus community efforts on bolstering crates in these areas. With sustained<br>and systematic effort, we can probably help push a number of these crates to 1.0<br>maturity this year.</p>
+<p>A second strategy is to focus specifically on tasks that play to Rust’s<br>strengths. For example, Rust’s potential for <a href="http://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html" target="_blank" rel="external">fearless concurrency</a> across a<br>range of paradigms is one of the most unique and exciting aspects of the<br>language. But we aren’t fully delivering on this potential, due to the<br>immaturity of libraries in the space. The response to work in this space, like<br>the recent <a href="http://aturon.github.io/blog/2016/08/11/futures/" target="_blank" rel="external">futures library announcement</a>, suggests that there is a lot of<br>pent-up demand and excitement, and that this kind of work can open a lot of<br>doors for Rust. So concurrency/asynchrony/parallelism is one segment of the<br>ecosystem that likely deserves particular focus (and feeds into the high-scale<br>server goal as well); there are likely others.</p>
+<h3 id="Rust-should-integrate-easily-into-large-build-systems"><a href="#Rust-should-integrate-easily-into-large-build-systems" class="headerlink" title="Rust should integrate easily into large build systems"></a>Rust should integrate easily into large build systems</h3><p>When working with larger organizations interested in using Rust, one of the<br>first hurdles we tend to run into is fitting into an existing build<br>system. We’ve been exploring a number of different approaches, each of which<br>ends up using Cargo (and sometimes <code>rustc</code>) in different ways, with different<br>stories about how to incorporate crates from the broader crates.io ecosystem.<br>Part of the issue seems to be a perceived overlap between functionality in Cargo<br>(and its notion of compilation unit) and in ambient build systems, but we have<br>yet to truly get to the bottom of the issues—and it may be that the problem is<br>one of communication, rather than of some technical gap.</p>
+<p>By the end of 2017, this kind of integration should be <em>easy</em>: as a community,<br>we should have a strong understanding of best practices, and potentially build<br>tooling in support of those practices. And of course, we want to approach this<br>goal with Rust’s values in mind, ensuring that first-class access to the<br>crates.io ecosystem is a cornerstone of our eventual story.</p>
+<h3 id="Rust’s-community-should-provide-mentoring-at-all-levels"><a href="#Rust’s-community-should-provide-mentoring-at-all-levels" class="headerlink" title="Rust’s community should provide mentoring at all levels"></a>Rust’s community should provide mentoring at all levels</h3><p>The Rust community is awesome, in large part because of how welcoming it is. But<br>we could do a lot more to help grow people into roles in the project, including<br>pulling together important work items at all level of expertise to direct people<br>to, providing mentoring, and having a clearer on-ramp to the various official<br>Rust teams. Outreach and mentoring is also one of the best avenues for<br>increasing diversity in the project, which, as the survey demonstrates, has a<br>lot of room for improvement.</p>
+<p>While there’s work here for <em>all</em> the teams, the community team in particular<br>will continue to focus on early-stage outreach, while other teams will focus on<br>leadership onboarding.</p>
+<h2 id="Areas-of-exploration"><a href="#Areas-of-exploration" class="headerlink" title="Areas of exploration"></a>Areas of exploration</h2><p>The goals above represent the steps we think are most essential to Rust’s<br>success in 2017, and where we are in a position to lay out a fairly concrete vision.</p>
+<p>Beyond those goals, however, there are a number of areas with strong potential<br>for Rust that are in a more exploratory phase, with subcommunities already<br>exploring the frontiers. Some of these areas are important enough that we want<br>to call them out explicitly, and will expect ongoing progress over the course of<br>the year. In particular, the subteams are expected to proactively help organize<br>and/or carry out explorations in these areas, and by the end of the year we<br>expect to have greater clarity around Rust’s story for these areas, putting us<br>in a position to give more concrete goals in subsequent roadmaps.</p>
+<p>Here are the two proposed Areas of Exploration.</p>
+<h3 id="Integration-with-other-languages"><a href="#Integration-with-other-languages" class="headerlink" title="Integration with other languages"></a>Integration with other languages</h3><p>Other languages here includes “low-level” cases like C/C++, and “high-level”<br>cases like JavaScript, Ruby, Python, Java and C#. Rust adoption often depends on<br>being able to start using it <em>incrementally</em>, and language integration is often<br>a key to doing so – an intuition substantiated by data from the survey and<br>commercial outreach.</p>
+<p>Rust’s core support for interfacing with C is fairly strong, but wrapping a C<br>library still involves tedious work mirroring declarations and writing C shims<br>or other glue code. Moreover, many projects that are ripe for Rust integration<br>are currently using C++, and interfacing with those effectively requires<br>maintaining an alternative C wrapper for the C++ APIs. This is a problem both<br>for Rust code that wants to employ existing libraries and for those who want to<br>integrate Rust into existing C/C++ codebases.</p>
+<p>For interfacing with “high-level” languages, there is the additional barrier of<br>working with a runtime system, which often involves integration with a garbage<br>collector and object system. There are ongoing projects on these fronts, but<br>it’s early days and there are still a lot of open questions.</p>
+<p>Some potential avenues of exploration include:</p>
+<ul>
+<li>Continuing work on bindgen, with focus on seamless C and eventually C++<br>support. This may involve some FFI-related language extensions (like richer<br><code>repr</code>).</li>
+<li>Other routes for C/C++ integration.</li>
+<li>Continued expansion of existing projects like<br><a href="https://github.com/rustbridge/helix" target="_blank" rel="external">Helix</a> and<br><a href="https://github.com/dherman/neon" target="_blank" rel="external">Neon</a>, which may require some language<br>enhancements.</li>
+<li>Continued work on <a href="http://manishearth.github.io/blog/2016/08/18/gc-support-in-rust-api-design/" target="_blank" rel="external">GC integration hooks</a></li>
+<li>Investigation of object system integrations, including DOM and<br><a href="https://internals.rust-lang.org/t/rust-and-gnome-meeting-notes/4339" target="_blank" rel="external">GObject</a>.</li>
+</ul>
+<h3 id="Usage-in-resource-constrained-environments"><a href="#Usage-in-resource-constrained-environments" class="headerlink" title="Usage in resource-constrained environments"></a>Usage in resource-constrained environments</h3><p>Rust is a natural fit for programming resource-constrained devices, and<br>there are some <a href="https://github.com/rust-embedded/" target="_blank" rel="external">ongoing efforts</a> to better<br>organize work in this area, as well as a<br><a href="https://internals.rust-lang.org/t/roadmap-2017-needs-of-no-std-embedded-developers/4096" target="_blank" rel="external">thread</a><br>on the current significant problems in the domain. Embedded devices likewise<br>came up repeatedly in the internals thread. It’s also a potentially huge<br>market. At the moment, though, it’s far from clear what it will take to achieve<br>significant production use in the embedded space. It would behoove us to try to<br>get a clearer picture of this space in 2017.</p>
+<p>Some potential avenues of exploration include:</p>
+<ul>
+<li>Continuing work on <a href="https://github.com/rust-lang-nursery/rustup.rs/" target="_blank" rel="external">rustup</a>,<br><a href="https://github.com/japaric/xargo" target="_blank" rel="external">xargo</a> and similar tools for easing<br>embedded development.</li>
+<li>Land <a href="https://github.com/rust-lang/rfcs/pull/1133" target="_blank" rel="external">“std-aware Cargo”</a>, making<br>it easier to experiment with ports of the standard library to new platforms.</li>
+<li>Work on<br><a href="https://internals.rust-lang.org/t/fleshing-out-libstd-scenarios/4206" target="_blank" rel="external">scenarios</a><br>or other techniques for cutting down <code>std</code> in various ways, depending on<br>platform capabilities.</li>
+<li>Develop a story for failable allocation in <code>std</code> (i.e., without aborting when<br>out of memory).</li>
+</ul>
+<h2 id="Non-goals"><a href="#Non-goals" class="headerlink" title="Non-goals"></a>Non-goals</h2><p>Finally, it’s important that the roadmap “have teeth”: we should be focusing on<br>the goals, and avoid getting distracted by other improvements that, whatever<br>their appeal, could sap bandwidth and our ability to ship what we believe is<br>most important in 2017.</p>
+<p>To that end, it’s worth making some explicit <em>non</em>-goals, to set expectations<br>and short-circuit discussions:</p>
+<ul>
+<li><p>No major new language features, except in service of one of the goals. Cases<br>that have a very strong impact on the “areas of support” may be considered<br>case-by-case.</p>
+</li>
+<li><p>No major expansions to <code>std</code>, except in service of one of the goals. Cases<br>that have a very strong impact on the “areas of support” may be considered<br>case-by-case.</p>
+</li>
+<li><p>No Rust 2.0. In particular, no changes to the language or <code>std</code> that could be<br>perceived as “major breaking changes”. We need to be doing everything we can<br>to foster maturity in Rust, both in reality and in perception, and ongoing<br>stability is an important part of that story.</p>
+</li>
+</ul>
+<h1 id="Drawbacks-and-alternatives"><a href="#Drawbacks-and-alternatives" class="headerlink" title="Drawbacks and alternatives"></a>Drawbacks and alternatives</h1><p>It’s a bit difficult to enumerate the full design space here, given how much<br>there is we could potentially be doing. Instead, we’ll take a look at some<br>alternative high-level strategies, and some additional goals from the internals<br>thread.</p>
+<h2 id="Overall-strategy-1"><a href="#Overall-strategy-1" class="headerlink" title="Overall strategy"></a>Overall strategy</h2><p>At a high level, though, the biggest alternatives (and potential for drawbacks)<br>are probably at the strategic level. This roadmap proposal takes the approach of<br>(1) focusing on reducing clear blockers to Rust adoption, particularly connected<br>with productivity and (2) choosing one particular “driver” for adoption to<br>invest in, namely high-scale servers. The balance between blocker/driver focus<br>could be shifted—it might be the case that by providing more incentive to use<br>Rust in a particular domain, people are willing to overlook some of its<br>shortcomings.</p>
+<p>Another possible blind spot is the conservative take on language expansion,<br>particularly when it comes to productivity. For example, we could put much<br>greater emphasis on “metaprogramming”, and try to complete Plugins 2.0<br>in 2017. That kind of investment <em>could</em> pay dividends, since libraries can do<br>amazing things with plugins that could draw people to Rust. But, as above, the<br>overall strategy of reducing blockers assumes that what’s most needed isn’t more<br>flashy examples of Rust’s power, but rather more bread-and-butter work on<br>reducing friction, improving tooling, and just making Rust easier to use across<br>the board.</p>
+<p>The roadmap is informed by the survey, systematic outreach, numerous direct<br>conversations, and general strategic thinking. But there could certainly be<br>blind spots and biases. It’s worth double-checking our inputs.</p>
+<h2 id="Other-ideas-from-the-internals-thread"><a href="#Other-ideas-from-the-internals-thread" class="headerlink" title="Other ideas from the internals thread"></a>Other ideas from the internals thread</h2><p>Finally, there were several strong contenders for additional goals from the internals<br>thread that we might consider. To be clear, these are not currently part of the<br>proposed goals, but we may want to consider elevating them:</p>
+<ul>
+<li><p>A goal explicitly for<br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/68" target="_blank" rel="external">systematic expansion of commercial use</a>;<br>this proposal takes that as a kind of overarching idea for all of the goals.</p>
+</li>
+<li><p>A goal for Rust infrastructure, which came<br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/9" target="_blank" rel="external">up</a><br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/68" target="_blank" rel="external">several</a><br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/5" target="_blank" rel="external">times</a>.<br>While this goal seems quite worthwhile in terms of paying dividends across the<br>project, in terms of our current subteam makeup it’s hard to see how to<br>allocate resources toward this goal without dropping other important goals. We<br>might consider forming a dedicated infrastructure team, or somehow organizing<br>and growing our bandwidth in this area.</p>
+</li>
+<li><p>A goal for progress in areas like<br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/52" target="_blank" rel="external">scientific computing</a>,<br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/48" target="_blank" rel="external">HPC</a>.</p>
+</li>
+</ul>
+<p>After an exhaustive look at the thread, the remaining proposals are in one way<br>or another covered somewhere in the discussion above.</p>
+<h1 id="Unresolved-questions"><a href="#Unresolved-questions" class="headerlink" title="Unresolved questions"></a>Unresolved questions</h1><p>The main unresolved question is how to break the given goals into more<br>deliverable pieces of work, but that’s a process that will happen after the<br>overall roadmap is approved.</p>
+<p>Are there other “areas of support” we should consider? Should any of these areas<br>be elevated to a top-level goal (which would likely involve cutting back on some<br>other goal)?</p>
+<p>Should we consider some loose way of organizing “special interest groups” to<br>focus on some of the priorities not part of the official goal set, but where<br>greater coordination would be helpful? This was suggested<br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/70" target="_blank" rel="external">multiple</a><br><a href="https://internals.rust-lang.org/t/setting-our-vision-for-the-2017-cycle/3958/135" target="_blank" rel="external">times</a>.</p>
+<p>Finally, there were several strong contenders for additional goals from the<br>internals thread that we might consider, which are listed at the end of the<br>goals section.</p>
+<h1 id="译者话"><a href="#译者话" class="headerlink" title="译者话"></a>译者话</h1><p>翻译RFC是想熟悉Rust的开发流程、规范和想法。所以我不保证会全部所有RFC文档都会翻译（努力多翻译一些）。<br>另外，由于英语水平、对Rust的熟悉程度以及提及的RFC提案的理解程度加上时间匆忙等原因，我想错误会很多请大家包含和指正<a href="https://github.com/junhwong" target="_blank" rel="external">github</a>或<a href="//jun.alu.red">博客</a>。</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/rust/rfc-0001-private-fields/" data-toggle="tooltip" data-placement="top"
+                           title="RFC-0001 私有字段">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#摘要"><span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#动机"><span class="toc-text">动机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Making-Rust-successful"><span class="toc-text">Making Rust successful</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-measure-of-success"><span class="toc-text">The measure of success</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-obstacles-to-success"><span class="toc-text">The obstacles to success</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Core-values"><span class="toc-text">Core values</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Detailed-design"><span class="toc-text">Detailed design</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Overall-strategy"><span class="toc-text">Overall strategy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Goals"><span class="toc-text">Goals</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust-should-have-a-lower-learning-curve"><span class="toc-text">Rust should have a lower learning curve</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust-should-have-a-pleasant-edit-compile-debug-cycle"><span class="toc-text">Rust should have a pleasant edit-compile-debug cycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust-should-provide-a-solid-but-basic-IDE-experience"><span class="toc-text">Rust should provide a solid, but basic IDE experience</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust-should-provide-easy-access-to-high-quality-crates"><span class="toc-text">Rust should provide easy access to high quality crates</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust-should-be-well-equipped-for-writing-robust-high-scale-servers"><span class="toc-text">Rust should be well-equipped for writing robust, high-scale servers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust-should-have-1-0-level-crates-for-essential-tasks"><span class="toc-text">Rust should have 1.0-level crates for essential tasks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust-should-integrate-easily-into-large-build-systems"><span class="toc-text">Rust should integrate easily into large build systems</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust’s-community-should-provide-mentoring-at-all-levels"><span class="toc-text">Rust’s community should provide mentoring at all levels</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Areas-of-exploration"><span class="toc-text">Areas of exploration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Integration-with-other-languages"><span class="toc-text">Integration with other languages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Usage-in-resource-constrained-environments"><span class="toc-text">Usage in resource-constrained environments</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-goals"><span class="toc-text">Non-goals</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Drawbacks-and-alternatives"><span class="toc-text">Drawbacks and alternatives</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Overall-strategy-1"><span class="toc-text">Overall strategy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other-ideas-from-the-internals-thread"><span class="toc-text">Other ideas from the internals thread</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unresolved-questions"><span class="toc-text">Unresolved questions</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#译者话"><span class="toc-text">译者话</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rust"
+                           title="rust">rust</a>
+                        
+                        <a class="tag" href="/tags/#rfc"
+                           title="rfc">rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-rfc"
+                           title="rust-rfc">rust-rfc</a>
+                        
+                        <a class="tag" href="/tags/#rust-roadmap"
+                           title="rust-roadmap">rust-roadmap</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/junhwong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 码代码的六月 2018
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jun.alu.red/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    var _baId = '10da107bea44a53f1770a42d7cb22457';
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','undefined','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<!--<img class="wechat-title-img" src="/images/avatar.jpg">-->
+</body>
+
+</html>
